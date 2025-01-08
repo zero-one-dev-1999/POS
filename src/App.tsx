@@ -6,10 +6,6 @@ import './App.css'
 function App() {
 	const [count, setCount] = useState(0)
 
-	const logName = (name: string) => {
-		console.log(name)
-	}
-
 	return (
 		<>
 			<div>
