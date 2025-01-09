@@ -1,5 +1,5 @@
 import AuthGuard from '@/auth/auth-guard'
-import Loadable from '@/components/loadable'
+import Loadable from '@/components/Loadable'
 import { POS_DASHBOARD_PAGE } from '@/helpers/pages'
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'

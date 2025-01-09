@@ -4,8 +4,14 @@ import ModeContextProvider from './theme/modeContext'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { BrowserRouter } from 'react-router-dom'
-import Minasa from './Minasa'
 import Router from './routes'
+import { setLocale } from 'yup'
+
+setLocale({
+	mixed: {
+		required: 'This field is required',
+	},
+})
 
 function App() {
 	return (
