@@ -1,6 +1,6 @@
-export const remToPx = value => Math.round(parseFloat(value) * 16)
+export const remToPx = (value: string) => Math.round(parseFloat(value) * 16)
 
-export const pxToRem = value => `${value / 16}rem`
+export const pxToRem = (value: number) => `${value / 16}rem`
 
 export const responsiveFontSizes = ({ sm, md, lg }) => ({
 	'@media (min-width:600px)': {
@@ -17,7 +17,7 @@ export const responsiveFontSizes = ({ sm, md, lg }) => ({
 const primaryFont = 'Public Sans, sans-serif' // Google Font
 
 export const typography = {
-	// fontWeightBold: 700,
+	fontWeightBold: 700,
 	fontWeightMedium: 500,
 	fontWeightRegular: 400,
 	fontWeightSemiBold: 600,

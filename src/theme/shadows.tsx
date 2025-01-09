@@ -7,7 +7,7 @@ const LIGHT_MODE = palette.grey[500]
 
 const DARK_MODE = palette.common.black
 
-const createShadow = color => {
+const createShadow = (color: string) => {
 	const transparent1 = alpha(color, 0.2)
 	const transparent2 = alpha(color, 0.14)
 	const transparent3 = alpha(color, 0.12)
@@ -40,4 +40,4 @@ const createShadow = color => {
 	]
 }
 
-export const shadows = mode => (mode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE))
+export const shadows = (mode: 'light' | 'dark') => (mode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE))

@@ -1,4 +1,4 @@
-import { Button, Card, TextField } from '@mui/material'
+import { Button, Card, TextField, Typography } from '@mui/material'
 import { FC } from 'react'
 import { useModeContext } from './theme/modeContext'
 
@@ -15,6 +15,7 @@ const Minasa: FC = () => {
 			<br />
 			<br />
 			<TextField size='small' />
+			<Typography variant='h2'>Hello world</Typography>
 		</Card>
 	)
 }

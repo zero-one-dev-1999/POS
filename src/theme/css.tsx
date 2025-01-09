@@ -2,7 +2,7 @@ import { autocompleteClasses } from '@mui/material/Autocomplete'
 import { checkboxClasses } from '@mui/material/Checkbox'
 import { menuItemClasses } from '@mui/material/MenuItem'
 import { dividerClasses } from '@mui/material/Divider'
-import { alpha } from '@mui/material/styles'
+import { alpha, Theme } from '@mui/material/styles'
 
 export const paper = ({ theme, bgcolor, dropdown }) => ({
 	...bgBlur({
@@ -24,7 +24,7 @@ export const paper = ({ theme, bgcolor, dropdown }) => ({
 	}),
 })
 
-export const menuItem = theme => ({
+export const menuItem = (theme: Theme) => ({
 	...theme.typography.body2,
 	padding: theme.spacing(0.75, 1),
 	borderRadius: theme.shape.borderRadius * 0.75,
