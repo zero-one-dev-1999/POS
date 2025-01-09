@@ -3,14 +3,14 @@ import { FC } from 'react'
 import { useModeContext } from './theme/modeContext'
 
 const Minasa: FC = () => {
-	const { toggleMode } = useModeContext()
+	const { changeMode } = useModeContext()
 
 	return (
 		<Card variant='outlined' sx={{ m: 2 }}>
-			<Button variant='contained' color='primary' onClick={toggleMode}>
+			<Button variant='contained' color='primary' onClick={() => changeMode('light')}>
 				Light
 			</Button>
-			<Button variant='contained' color='primary' onClick={toggleMode} sx={{ marginLeft: 1 }}>
+			<Button variant='contained' color='primary' onClick={() => changeMode('dark')} sx={{ marginLeft: 1 }}>
 				Dark
 			</Button>
 			<br />
