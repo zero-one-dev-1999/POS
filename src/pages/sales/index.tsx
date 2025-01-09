@@ -1,4 +1,4 @@
-import BarChart from 'pages/dashboard/Barchart'
+import BarChart from '../dashboard/Barchart'
 
 const Sales = () => {
 	return (
