@@ -4,6 +4,7 @@ import { useModeContext } from './theme/modeContext'
 
 const Minasa: FC = () => {
 	const { toggleMode } = useModeContext()
+
 	return (
 		<Card variant='outlined' sx={{ m: 2 }}>
 			<Button variant='contained' color='primary' onClick={toggleMode}>
