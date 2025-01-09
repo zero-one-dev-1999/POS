@@ -12,7 +12,7 @@ export default tseslint.config(
 	{ ignores: ['dist', 'node_modules', 'public'] },
 	{
 		extends: [js.configs.recommended, ...tseslint.configs.recommended, prettierConfig],
-		files: ['**/*.{ts,tsx}'],
+		files: ['**/*.{ts,tsx,js,jsx}'],
 		languageOptions: {
 			ecmaVersion: 2020,
 			globals: globals.browser,
@@ -30,6 +30,12 @@ export default tseslint.config(
 			'no-unused-vars': 'warn',
 			'@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
 			'@typescript-eslint/no-explicit-any': 'warn',
+			'no-restricted-imports': [
+				'error',
+				{
+					patterns: ['@mui/*/*/*'],
+				},
+			],
 		},
 	},
 )
