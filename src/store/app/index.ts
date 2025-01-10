@@ -2,9 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 interface IUser {
 	id: number
-	email: string
-	name: string
-	role: string
+	password: string
+	username: string
 }
 
 interface IAppState {
