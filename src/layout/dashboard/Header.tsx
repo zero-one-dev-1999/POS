@@ -3,6 +3,7 @@ import { FC } from 'react'
 import Language from './Language'
 import FullScreen from './FullScreen'
 import Logo from './Logo'
+import ThemeMode from './ThemeMode'
 
 const Header: FC = () => {
 	return (
@@ -10,6 +11,7 @@ const Header: FC = () => {
 			<Logo />
 			<Stack sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
 				<FullScreen />
+				<ThemeMode />
 				<Language />
 			</Stack>
 		</Stack>
