@@ -36,6 +36,7 @@ export default tseslint.config(
 					patterns: ['@mui/*/*/*'],
 				},
 			],
+			'@typescript-eslint/ban-ts-comment': 'off',
 		},
 	},
 )
