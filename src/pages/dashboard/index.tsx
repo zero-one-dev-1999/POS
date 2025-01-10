@@ -1,12 +1,10 @@
-import { useSelector } from '@/hooks/use-selector'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const DashboardPage: FC = () => {
-	const user = useSelector(s => s.App.user)
+	const [t, { language }] = useTranslation()
 
-	console.log(user)
-
-	return <div>DashboardPage</div>
+	return <div>{t('dashboard')}</div>
 }
 
 export default DashboardPage

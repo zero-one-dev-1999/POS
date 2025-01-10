@@ -6,6 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { BrowserRouter } from 'react-router-dom'
 import Router from './routes'
 import { setLocale } from 'yup'
+import '@/i18n/i18n'
 
 setLocale({
 	mixed: {
