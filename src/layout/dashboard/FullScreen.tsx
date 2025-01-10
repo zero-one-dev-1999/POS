@@ -31,8 +31,8 @@ const FullScreen = () => {
 		<IconButton
 			onClick={toggle}
 			sx={{
-				width: 40,
-				height: 40,
+				width: 48,
+				height: 48,
 				...(isFullScreen && {
 					bgcolor: 'action.selected',
 				}),
