@@ -10,7 +10,8 @@ const DashboardLayout: FC = () => {
 				<Header />
 			</Stack>
 			<Divider sx={{ borderStyle: 'dashed' }} />
-			<Stack sx={{ px: { sm: 2, lg: 4 }, py: 2, height: 'calc(100vh - 81px)' }}>
+			<Divider sx={{ borderStyle: 'dashed' }} />
+			<Stack sx={{ px: { sm: 2, lg: 4 }, py: 2, height: 'calc(100vh - 82px)' }}>
 				<Outlet />
 			</Stack>
 		</Stack>

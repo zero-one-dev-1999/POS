@@ -67,7 +67,7 @@ const ThemeMode: FC = () => {
 		changeMode(e.target.checked ? 'dark' : 'light')
 	}
 
-	return <MaterialUISwitch sx={{ mr: -1 }} checked={mode === 'dark'} onChange={handleChange} />
+	return <MaterialUISwitch checked={mode === 'dark'} onChange={handleChange} />
 }
 
 export default ThemeMode

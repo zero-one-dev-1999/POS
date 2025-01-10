@@ -4,7 +4,7 @@ import { POS_DASHBOARD_PAGE } from '@/helpers/pages'
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
 
-const DashboardLayout = Loadable(lazy(() => import('@/layout/dashboard')))
+const DashboardLayout = Loadable(lazy(() => import('@/layout/main')))
 const DashboardPage = Loadable(lazy(() => import('@/pages/dashboard')))
 
 const MainRoutes = {

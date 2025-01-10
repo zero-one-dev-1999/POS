@@ -25,20 +25,13 @@ const Language = () => {
 	return (
 		<>
 			<Tooltip title='Language'>
-				<IconButton
-					onClick={handleClick}
-					size='small'
-					sx={{ ml: 2 }}
-					aria-controls={open ? 'account-menu' : undefined}
-					aria-haspopup='true'
-					aria-expanded={open ? 'true' : undefined}
-				>
+				<IconButton onClick={handleClick} size='small' aria-controls={open ? 'language' : undefined} aria-haspopup='true' aria-expanded={open ? 'true' : undefined}>
 					<Avatar sx={{ width: 36, height: 36 }} src={currentLang?.icon} />
 				</IconButton>
 			</Tooltip>
 			<Menu
 				anchorEl={anchorEl}
-				id='account-menu'
+				id='language'
 				open={open}
 				onClose={handleClose}
 				onClick={handleClose}
