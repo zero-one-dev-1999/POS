@@ -62,6 +62,7 @@ const Table = (theme: Theme) => ({
 		styleOverrides: {
 			root: {
 				borderBottomStyle: 'dashed',
+				// borderBottomColor: theme.palette.grey[200],
 			},
 			paddingCheckbox: {
 				paddingLeft: theme.spacing(1),
@@ -69,11 +70,14 @@ const Table = (theme: Theme) => ({
 			head: {
 				fontSize: 14,
 				color: theme.palette.text.secondary,
+				// @ts-expect-error
 				fontWeight: theme.typography.fontWeightSemiBold,
+				// @ts-expect-error
 				backgroundColor: theme.palette.background.neutral,
 			},
 			stickyHeader: {
 				backgroundColor: theme.palette.background.paper,
+				// @ts-expect-error
 				backgroundImage: `linear-gradient(to bottom, ${theme.palette.background.neutral} 0%, ${theme.palette.background.neutral} 100%)`,
 			},
 		},

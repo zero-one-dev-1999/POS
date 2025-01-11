@@ -13,9 +13,10 @@ const Card = (theme: Theme) => ({
 			root: {
 				zIndex: 0,
 				position: 'relative',
+				// @ts-expect-error
 				boxShadow: theme.customShadows.card,
 				borderRadius: theme.shape.borderRadius * 2,
-				padding: theme.spacing(2),
+				// padding: theme.spacing(2),
 			},
 		},
 	},

@@ -40,5 +40,6 @@
 	"currency": "Currency",
 	"sign-in": "Sign in",
 	"sign-up": "Sign up",
-	"or": "Or"
+	"or": "Or",
+	"no-data": "No data"
 }

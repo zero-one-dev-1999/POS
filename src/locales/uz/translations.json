@@ -40,5 +40,6 @@
 	"currency": "Valyuta",
 	"sign-in": "Kirish",
 	"sign-up": "Ro'yxatdan o'tish",
-	"or": "yoki"
+	"or": "yoki",
+	"no-data": "Ma'lumotlar mavjud emas"
 }
