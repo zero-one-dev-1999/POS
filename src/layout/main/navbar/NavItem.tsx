@@ -36,6 +36,7 @@ const NavItem = forwardRef(({ open, item, depth, config, active, externalLink, .
 					}}
 					primaryTypographyProps={{
 						noWrap: true,
+						mr: 0.6,
 						typography: 'body2',
 						fontWeight: active ? 'fontWeightBold' : 'fontWeightMedium',
 						...(subItem && {

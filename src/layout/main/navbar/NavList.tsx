@@ -91,7 +91,8 @@ const NavList = ({ data, depth, config, hasChild }) => {
 							onMouseEnter: handleOpen,
 							onMouseLeave: handleClose,
 							sx: {
-								width: 160,
+								width: 'auto',
+								minWidth: 160,
 								...(open && {
 									pointerEvents: 'auto',
 								}),

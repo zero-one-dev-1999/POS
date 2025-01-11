@@ -2,14 +2,16 @@ import { Button, Divider, Grid2, IconButton, InputAdornment, Stack, Typography }
 import { FC, useState } from 'react'
 import { Formik, Form, useFormikContext } from 'formik'
 import * as Yup from 'yup'
-import FormikInput from '@/components/FormikInput'
 import Iconify from '@/components/Iconify'
 import { loginUser } from '@/firebase/firestore/users'
 import { Link } from 'react-router'
 import { POS_REGISTER_PAGE } from '@/helpers/pages'
+import { useTranslation } from 'react-i18next'
+import FormikInput from '@/components/FormikInput'
 
 const FormComponent: FC = () => {
 	const [showPassword, setShowPassword] = useState(false)
+	const [t] = useTranslation()
 	const { handleSubmit } = useFormikContext()
 
 	return (
@@ -28,17 +30,17 @@ const FormComponent: FC = () => {
 			<Stack sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }} spacing={2}>
 				<Stack>
 					<Typography textAlign={'center'} variant='h3' mb={4}>
-						Sign In
+						{t('sign-in')}
 					</Typography>
 					<Grid2 container spacing={2}>
 						<Grid2 size={12}>
-							<FormikInput field='username' size='medium' label='Userusername' />
+							<FormikInput field='username' size='medium' label={t('username')} />
 						</Grid2>
 						<Grid2 size={12}>
 							<FormikInput
 								field='password'
 								size='medium'
-								label='Password'
+								label={t('password')}
 								type={showPassword ? 'text' : 'password'}
 								InputProps={{
 									endAdornment: (
@@ -53,15 +55,15 @@ const FormComponent: FC = () => {
 						</Grid2>
 					</Grid2>
 					<Button type='submit' variant='contained' color='success' sx={{ my: 4 }} size='large'>
-						Sign In
+						{t('sign-in')}
 					</Button>
 					<Divider variant='middle' sx={{ borderStyle: 'dashed' }}>
-						or
+						{t('or')}
 					</Divider>
 
 					<Link to={POS_REGISTER_PAGE} style={{ margin: '24px 0' }}>
 						<Button type='button' variant='contained' sx={{ width: '100%' }} size='large'>
-							Sign Up
+							{t('sign-up')}
 						</Button>
 					</Link>
 				</Stack>

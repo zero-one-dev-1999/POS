@@ -1,8 +1,31 @@
-import { Stack, TextField, InputLabel, FormControl } from '@mui/material'
+import { Stack, TextField, InputLabel, FormControl, TextFieldProps } from '@mui/material'
 import { useFormikContext } from 'formik'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const FormikInput = ({ min, max, field, label, type = 'text', size = 'small', InputProps = {}, readOnly = false, required = false, withoutHelperText = false, ...props }) => {
+interface FormikInputProps {
+	field: string
+	min?: number
+	max?: number
+	label?: string
+	readOnly?: boolean
+	required?: boolean
+	withoutHelperText?: boolean
+}
+
+const FormikInput: FC<TextFieldProps & FormikInputProps> = ({
+	min,
+	max,
+	field,
+	label,
+	type = 'text',
+	size = 'small',
+	InputProps = {},
+	readOnly = false,
+	required = false,
+	withoutHelperText = false,
+	...props
+}) => {
 	const { getFieldMeta, getFieldProps } = useFormikContext()
 	const [t] = useTranslation()
 
@@ -20,9 +43,11 @@ const FormikInput = ({ min, max, field, label, type = 'text', size = 'small', In
 					{...fieldProps}
 					inputProps={{ max, min }}
 					value={fieldProps.value || ''}
+					// @ts-expect-error
 					onWheel={e => e.target.blur()}
 					InputProps={{ ...InputProps, readOnly }}
 					error={Boolean(meta.touched && meta.error)}
+					// @ts-expect-error
 					helperText={!withoutHelperText ? Boolean(meta.touched && meta.error) && t(meta.error) : ''}
 				/>
 			</FormControl>

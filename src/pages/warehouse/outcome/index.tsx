@@ -1,7 +1,9 @@
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const Outcome: FC = () => {
-	return <div>Outcome</div>
+	const [t] = useTranslation()
+	return <div>{t('outcome')}</div>
 }
 
 export default Outcome

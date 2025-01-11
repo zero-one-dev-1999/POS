@@ -4,7 +4,7 @@ import { MouseEvent, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const Language = () => {
-	const { i18n } = useTranslation()
+	const { t, i18n } = useTranslation()
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 	const open = Boolean(anchorEl)
 
@@ -24,7 +24,7 @@ const Language = () => {
 
 	return (
 		<>
-			<Tooltip title='Language'>
+			<Tooltip title={t('language')}>
 				<IconButton onClick={handleClick} size='small' aria-controls={open ? 'language' : undefined} aria-haspopup='true' aria-expanded={open ? 'true' : undefined}>
 					<Avatar sx={{ width: 36, height: 36 }} src={currentLang?.icon} />
 				</IconButton>

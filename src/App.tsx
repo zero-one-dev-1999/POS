@@ -22,7 +22,6 @@ function App() {
 					<ThemeProvider>
 						<BrowserRouter>
 							<Router />
-							{/* <Minasa /> */}
 						</BrowserRouter>
 					</ThemeProvider>
 				</ModeContextProvider>

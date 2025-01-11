@@ -1,11 +1,13 @@
 import { useSelector } from '@/hooks/use-selector'
 import { Avatar, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
-import { MouseEvent, useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 import Iconify from '@/components/Iconify'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { appActions } from '@/store/app'
+import { useTranslation } from 'react-i18next'
 
-const Profile = () => {
+const Profile: FC = () => {
+	const [t] = useTranslation()
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 	const open = Boolean(anchorEl)
 
@@ -27,7 +29,7 @@ const Profile = () => {
 
 	return (
 		<>
-			<Tooltip title='Profile'>
+			<Tooltip title={t('profile')}>
 				<IconButton onClick={handleClick} size='small' aria-controls={open ? 'profile' : undefined} aria-haspopup='true' aria-expanded={open ? 'true' : undefined}>
 					<Avatar sx={{ width: 40, height: 40 }}>{String(user?.username?.[0]).toUpperCase()}</Avatar>
 				</IconButton>
@@ -91,7 +93,7 @@ const Profile = () => {
 					<Avatar color='error' variant='circular'>
 						<Iconify icon='mdi:logout' />
 					</Avatar>
-					<Typography variant='body2'>Logout</Typography>
+					<Typography variant='body2'>{t('logout')}</Typography>
 				</MenuItem>
 			</Menu>
 		</>
