@@ -1,53 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, useLayoutEffect, useMemo, useState } from 'react'
-import {
-	useReactTable,
-	getCoreRowModel,
-	flexRender,
-	SortingState,
-	getSortedRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	PaginationState,
-} from '@tanstack/react-table'
-import {
-	Card,
-	Stack,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Typography,
-} from '@mui/material'
+import { useReactTable, getCoreRowModel, flexRender, SortingState, getSortedRowModel, getFilteredRowModel, getPaginationRowModel, PaginationState } from '@tanstack/react-table'
+import { Card, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import Pagination from './Pagination'
-import { ColumnFilter, ISortBy, TableComponentProps } from './types'
+import { ColumnFilter, TableComponentProps } from './types'
 import SkeletonCell from './SkeletonCell'
 import { useTranslation } from 'react-i18next'
 import LazyImage from '../LazyImage'
+import Iconify from '../Iconify'
+import { buildApiParams } from '@/utils/react-table'
 
-const buildApiParams = (
-	page: number = 1,
-	pageSize: number = 10,
-	sortBy: ISortBy = [],
-	filters: ColumnFilter[] = [],
-) => ({
-	page: page.toString(),
-	pageSize: pageSize.toString(),
-	...(sortBy.length > 0 && {
-		sort: (sortBy[0].desc ? '-' : '') + sortBy[0].id,
-	}),
-	...Object.fromEntries(filters.map(({ id, value }) => [id, value])),
-})
-
-const TableComponent = <T,>({
-	data,
-	columns,
-	pagination: remotePagiation,
-	onChange,
-	loading = false,
-}: TableComponentProps<T>) => {
+const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChange, loading = false }: TableComponentProps<T>) => {
 	const [t] = useTranslation()
 
 	const [sorting, setSorting] = useState<SortingState>([])
@@ -58,8 +21,6 @@ const TableComponent = <T,>({
 		totalSize: remotePagiation.totalSize ?? 0,
 		pageCount: remotePagiation.pageCount ?? 0,
 	})
-
-	console.log(loading)
 
 	const table = useReactTable({
 		data,
@@ -112,14 +73,27 @@ const TableComponent = <T,>({
 						<TableRow key={headerGroup.id}>
 							{headerGroup.headers.map(header => (
 								<TableCell key={header.id} onClick={header.column.getToggleSortingHandler()}>
-									{flexRender(header.column.columnDef.header, header.getContext())}
-									<span>
-										{header.column.getCanSort() && header.column.getIsSorted()
-											? header.column.getIsSorted() === 'asc'
-												? ' ↑'
-												: ' ↓'
-											: ''}
-									</span>
+									<Stack direction={'row'} alignItems={'center'}>
+										{flexRender(header.column.columnDef.header, header.getContext())}
+										<span
+											style={{
+												paddingLeft: '8px',
+												display: 'flex',
+												alignItems: 'center',
+												justifyContent: 'center',
+											}}
+										>
+											{header.column.getCanSort() && header.column.getIsSorted() ? (
+												header.column.getIsSorted() === 'asc' ? (
+													<Iconify icon='basil:arrow-up-solid' width={25} />
+												) : (
+													<Iconify icon='basil:arrow-down-solid' width={25} />
+												)
+											) : (
+												''
+											)}
+										</span>
+									</Stack>
 								</TableCell>
 							))}
 						</TableRow>
@@ -131,11 +105,12 @@ const TableComponent = <T,>({
 							{headerGroup.headers.map(header => (
 								// @ts-expect-error
 								<TableCell key={header.id} sx={{ ...header.column.columnDef?.style, padding: '10px' }}>
-									{header.column.columnDef.Filter ? (
-										<header.column.columnDef.Filter {...header.getContext()} />
-									) : (
-										flexRender(header.column.columnDef.header, header.getContext())
-									)}
+									{header.column.getCanFilter() &&
+										(header.column.columnDef.Filter ? (
+											<header.column.columnDef.Filter {...header.getContext()} />
+										) : (
+											flexRender(header.column.columnDef.header, header.getContext())
+										))}
 								</TableCell>
 							))}
 						</TableRow>
@@ -146,7 +121,9 @@ const TableComponent = <T,>({
 								{row.getVisibleCells().map(cell => (
 									<TableCell
 										key={cell.id}
-										style={{
+										sx={{
+											// @ts-expect-error
+											...cell.column.columnDef?.style,
 											padding: '8px',
 										}}
 									>
@@ -186,6 +163,19 @@ const TableComponent = <T,>({
 						</TableRow>
 					)}
 				</TableBody>
+				{/* <TableFooter>
+					{table.getFooterGroups().map(footerGroup => (
+						<TableRow key={footerGroup.id}>
+							{footerGroup.headers.map(footer => (
+								<TableCell key={footer.id}>
+									<Stack direction={'row'} alignItems={'center'}>
+										{flexRender(footer.column.columnDef.footer, footer.getContext())}
+									</Stack>
+								</TableCell>
+							))}
+						</TableRow>
+					))}
+				</TableFooter> */}
 			</Table>
 
 			{data.length !== 0 && pagination && pagination.pageCount > 1 && (

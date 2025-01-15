@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { ChangeEvent, FC } from 'react'
-import { Pagination as MuiPagination, SxProps } from '@mui/material'
+import { Pagination as MuiPagination } from '@mui/material'
 
 interface IPaginationProps {
 	page: number

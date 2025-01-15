@@ -62,7 +62,7 @@ const Table = (theme: Theme) => ({
 		styleOverrides: {
 			root: {
 				borderBottomStyle: 'dashed',
-				// borderBottomColor: theme.palette.grey[200],
+				borderBottomColor: theme.palette.divider,
 			},
 			paddingCheckbox: {
 				paddingLeft: theme.spacing(1),
