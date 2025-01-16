@@ -8,7 +8,7 @@ interface IPaginationProps {
 	pageCount: number
 }
 
-const Pagination: FC<IPaginationProps> = ({ page, handleChange, pageCount }) => {
+const PaginationComponent: FC<IPaginationProps> = ({ page, handleChange, pageCount }) => {
 	return (
 		<MuiPagination
 			count={pageCount}
@@ -26,4 +26,4 @@ const Pagination: FC<IPaginationProps> = ({ page, handleChange, pageCount }) => 
 	)
 }
 
-export default Pagination
+export default PaginationComponent

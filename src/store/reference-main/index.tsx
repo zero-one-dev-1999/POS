@@ -39,6 +39,11 @@ const { actions, reducer } = createSlice({
 		setFormIsUpdate(state, { payload }) {
 			state.form.isUpdate = payload
 		},
+		resetForm(state) {
+			state.form.isOpen = false
+			state.form.isUpdate = false
+			state.form.values = null
+		},
 	},
 })
 

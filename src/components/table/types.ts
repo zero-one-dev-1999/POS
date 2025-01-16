@@ -8,14 +8,14 @@ interface PaginationProps {
 }
 
 interface IOnChangeParams {
-	page: string
-	pageSize: string
+	// page: string
+	// pageSize: string
 	sort?: string
 }
 interface TableComponentProps<T> {
 	data: T[]
 	columns: ColumnDef<T>[]
-	pagination: PaginationProps
+	// pagination: PaginationProps
 	// eslint-disable-next-line no-unused-vars
 	onChange: (params: IOnChangeParams) => void
 	loading: boolean

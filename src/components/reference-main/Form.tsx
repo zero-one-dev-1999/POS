@@ -9,7 +9,7 @@ import FormikInput from '../input/FormikInput'
 import Iconify from '../iconify'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { referenceMainActions } from '@/store/reference-main'
-import { createReferenceMainDoc, getReferenceMainData } from '@/firebase/firestore/reference-main'
+import { createReferenceMainDoc, getReferenceMainData, updateReferenceMainDoc } from '@/firebase/firestore/reference-main'
 import Loader from '../loader'
 
 const langList = [
@@ -22,10 +22,11 @@ const Form: FC<{ controller: string }> = ({ controller }) => {
 	const [t] = useTranslation()
 	const dispatch = useDispatch()
 
-	const { isOpen, isUpdate, isLoading } = useSelector(({ ReferenceMain: s }) => ({
+	const { isOpen, isUpdate, isLoading, formValues } = useSelector(({ ReferenceMain: s }) => ({
 		isOpen: s.form.isOpen,
 		isUpdate: s.form.isUpdate,
 		isLoading: s.loading.form,
+		formValues: s.form.values,
 	}))
 
 	const formik = useFormik({
@@ -43,12 +44,15 @@ const Form: FC<{ controller: string }> = ({ controller }) => {
 			),
 		}),
 		onSubmit: values => {
+			if (isUpdate) {
+				updateReferenceMainDoc(controller, values)
+			} else {
+				createReferenceMainDoc(controller, values)
+			}
 			dispatch(referenceMainActions.setFormLoading(true))
-			createReferenceMainDoc(controller, values)
 			setTimeout(() => {
 				dispatch(referenceMainActions.setFormLoading(false))
 				dispatch(referenceMainActions.setFormIsOpen(false))
-				formik.resetForm()
 				getReferenceMainData(controller)
 			}, 600)
 		},
@@ -59,6 +63,19 @@ const Form: FC<{ controller: string }> = ({ controller }) => {
 			formik.setFieldValue(`translations[0].lang_short_name`, langList.find(f => f.value === 'uz')?.value)
 		}
 	}, [isOpen, isUpdate])
+
+	useEffect(() => {
+		if (isUpdate && isOpen && formValues) {
+			formik.setValues(formValues)
+		}
+	}, [isOpen, isUpdate, formValues])
+
+	useEffect(() => {
+		if (!isOpen) {
+			formik.resetForm()
+			dispatch(referenceMainActions.resetForm())
+		}
+	}, [isOpen])
 
 	return (
 		<FormikProvider value={formik}>

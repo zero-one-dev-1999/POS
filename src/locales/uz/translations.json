@@ -41,5 +41,7 @@
 	"sign-in": "Kirish",
 	"sign-up": "Ro'yxatdan o'tish",
 	"or": "yoki",
-	"no-data": "Ma'lumotlar mavjud emas"
+	"no-data": "Ma'lumotlar mavjud emas",
+	"name": "Nomi",
+	"actions": "Amallar"
 }

@@ -1,47 +1,47 @@
-import { ChangeEvent, useEffect, useLayoutEffect, useMemo, useState } from 'react'
-import { useReactTable, getCoreRowModel, flexRender, SortingState, getSortedRowModel, getFilteredRowModel, getPaginationRowModel, PaginationState } from '@tanstack/react-table'
+import { useLayoutEffect, useState } from 'react'
+import { useReactTable, getCoreRowModel, flexRender, SortingState, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table'
 import { Card, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import Pagination from './Pagination'
 import { ColumnFilter, TableComponentProps } from './types'
 import SkeletonCell from './SkeletonCell'
 import { useTranslation } from 'react-i18next'
 import LazyImage from '../image'
 import Iconify from '../iconify'
 import { buildApiParams } from '@/utils/react-table'
+import { useLocation } from 'react-router'
 
-const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChange, loading = false }: TableComponentProps<T>) => {
-	const [t] = useTranslation()
+const TableComponent = <T,>({ data, columns, onChange, loading = false }: TableComponentProps<T>) => {
+	const [t, { language }] = useTranslation()
+	const location = useLocation()
 
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([])
-	const [pagination, setPagination] = useState<PaginationState & { totalSize: number; pageCount: number }>({
-		pageIndex: 0,
-		pageSize: 10,
-		totalSize: 0,
-		pageCount: 0,
-	})
+	// const [pagination, setPagination] = useState<PaginationState & { totalSize: number; pageCount: number }>({
+	// 	pageIndex: 0,
+	// 	pageSize: 10,
+	// 	totalSize: 0,
+	// 	pageCount: 0,
+	// })
 
 	const table = useReactTable({
 		data,
 		columns,
-		manualPagination: false,
+		// manualPagination: false,
 		getCoreRowModel: getCoreRowModel(),
 		state: {
 			sorting,
 			columnFilters,
-			pagination: {
-				pageIndex: pagination?.pageIndex ?? 1,
-				pageSize: pagination?.pageSize ?? 10,
-			},
+			// pagination: {
+			// 	pageIndex: pagination?.pageIndex ?? 1,
+			// 	pageSize: pagination?.pageSize ?? 10,
+			// },
 		},
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
 		// @ts-expect-error
 		onColumnFiltersChange: setColumnFilters,
 		getFilteredRowModel: getFilteredRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		// @ts-expect-error
-		onPaginationChange: setPagination,
+		// getPaginationRowModel: getPaginationRowModel(),
+		// onPaginationChange: setPagination,
 		filterFns: {
 			text: (rows, id, filterValue) => {
 				// @ts-expect-error
@@ -50,29 +50,29 @@ const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChan
 		},
 	})
 
-	const pageIndex = useMemo(() => table.getState().pagination.pageIndex, [table.getState().pagination.pageIndex])
-	const pageSize = useMemo(() => table.getState().pagination.pageSize, [table.getState().pagination.pageSize])
+	// const pageIndex = useMemo(() => table.getState().pagination.pageIndex, [table.getState().pagination.pageIndex])
+	// const pageSize = useMemo(() => table.getState().pagination.pageSize, [table.getState().pagination.pageSize])
 
-	const pageChange = (e: ChangeEvent<unknown>, newPage: number) => {
-		table.setPageIndex(newPage - 1)
-	}
+	// const pageChange = (e: ChangeEvent<unknown>, newPage: number) => {
+	// 	table.setPageIndex(newPage - 1)
+	// }
 
-	useEffect(() => {
-		if (pagination) {
-			setPagination({
-				pageIndex: (remotePagiation.page ?? 1) - 1,
-				pageSize: remotePagiation.sizePerPage ?? 10,
-				totalSize: remotePagiation.totalSize ?? 0,
-				pageCount: remotePagiation.pageCount ?? 0,
-			})
-		}
-	}, [remotePagiation])
+	// useEffect(() => {
+	// 	if (pagination) {
+	// 		setPagination({
+	// 			pageIndex: (remotePagiation.page ?? 1) - 1,
+	// 			pageSize: remotePagiation.sizePerPage ?? 10,
+	// 			totalSize: remotePagiation.totalSize ?? 0,
+	// 			pageCount: remotePagiation.pageCount ?? 0,
+	// 		})
+	// 	}
+	// }, [remotePagiation])
 
 	useLayoutEffect(() => {
 		if (onChange) {
-			onChange(buildApiParams(pageIndex + 1, pageSize, sorting, columnFilters))
+			onChange(buildApiParams(sorting, columnFilters))
 		}
-	}, [columnFilters, sorting, pageIndex, pageSize])
+	}, [columnFilters, sorting, language, location.pathname])
 
 	return (
 		<TableContainer component={Card}>
@@ -83,7 +83,8 @@ const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChan
 							{headerGroup.headers.map(header => (
 								<TableCell key={header.id} onClick={header.column.getToggleSortingHandler()}>
 									<Stack direction={'row'} alignItems={'center'}>
-										{flexRender(header.column.columnDef.header, header.getContext())}
+										{/* @ts-expect-error */}
+										{flexRender(t(header.column.columnDef.header), header.getContext())}
 										<span
 											style={{
 												paddingLeft: '8px',
@@ -114,6 +115,7 @@ const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChan
 							{headerGroup.headers.map(header => (
 								// @ts-expect-error
 								<TableCell key={header.id} sx={{ ...header.column.columnDef?.style, padding: '10px' }}>
+									{/* @ts-expect-error */}
 									{header.column.getCanFilter() &&
 										(header.column.columnDef.Filter ? (
 											<header.column.columnDef.Filter {...header.getContext()} />
@@ -186,12 +188,11 @@ const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChan
 					))}
 				</TableFooter> */}
 			</Table>
-			{/* <pre>{JSON.stringify(remotePagiation)}</pre> */}
-			{data.length !== 0 && pagination && pagination.pageCount > 1 && (
+			{/* {data.length !== 0 && pagination && pagination.pageCount > 1 && (
 				<Stack sx={{ p: 2 }}>
 					<Pagination page={pageIndex + 1} handleChange={pageChange} pageCount={pagination.pageCount} />
 				</Stack>
-			)}
+			)} */}
 		</TableContainer>
 	)
 }

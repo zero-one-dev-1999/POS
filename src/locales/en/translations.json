@@ -41,5 +41,7 @@
 	"sign-in": "Sign in",
 	"sign-up": "Sign up",
 	"or": "Or",
-	"no-data": "No data"
+	"no-data": "No data",
+	"name": "Name",
+	"actions": "Actions"
 }

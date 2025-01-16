@@ -1,9 +1,15 @@
-import { FC, useEffect, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import TableComponent from '../table'
 import { ColumnDef } from '@tanstack/react-table'
-import { getColumnWithOrder, TextColumnFilter } from '@/utils/react-table'
+import { ActionColumnCell, getColumnWithOrder, TextColumnFilter } from '@/utils/react-table'
 import { useSelector } from '@/hooks/use-selector'
-import { getReferenceMainData, getReferenceMainPagination } from '@/firebase/firestore/reference-main'
+import { deleteReferenceMainDoc, getReferenceMainData, updateStartReferenceMainDoc } from '@/firebase/firestore/reference-main'
+import { useTranslation } from 'react-i18next'
+import { IconButton, Tooltip } from '@mui/material'
+import Iconify from '../iconify'
+import { useConfirm } from 'material-ui-confirm'
+import { referenceMainActions } from '@/store/reference-main'
+import { useDispatch } from '@/hooks/use-dispatch'
 
 interface IData {
 	id: number
@@ -19,38 +25,64 @@ const statusOptions = [
 ]
 
 const ReferenceMainTable: FC<{ controller: string }> = ({ controller }) => {
-	const { data, loading, pagination } = useSelector(({ ReferenceMain: s }) => ({
+	const [t] = useTranslation()
+	const confirm = useConfirm()
+	const dispatch = useDispatch()
+
+	const { data, loading } = useSelector(({ ReferenceMain: s }) => ({
 		data: s.data,
 		loading: s.loading.data,
-		pagination: s.pagination,
 	}))
 
-	useEffect(() => {
-		console.log(pagination)
-	}, [pagination])
+	const handleUpdateStart = (id: string) => {
+		updateStartReferenceMainDoc(controller, id)
 
+		dispatch(referenceMainActions.setFormIsOpen(true))
+		dispatch(referenceMainActions.setFormIsUpdate(true))
+		dispatch(referenceMainActions.setFormLoading(true))
+
+		setTimeout(() => {
+			dispatch(referenceMainActions.setFormLoading(false))
+		}, 600)
+	}
+
+	const handleDelete = (id: string) => {
+		confirm({
+			title: t('are-you-sure'),
+			cancellationText: t('no'),
+			confirmationText: t('yes'),
+			titleProps: { textAlign: 'center' },
+			cancellationButtonProps: { color: 'error', variant: 'outlined' },
+			confirmationButtonProps: { color: 'success', variant: 'contained' },
+		})
+			.then(() => {
+				deleteReferenceMainDoc(controller, id)
+
+				dispatch(referenceMainActions.setDataLoading(true))
+
+				setTimeout(() => {
+					getReferenceMainData(controller)
+				}, 600)
+			})
+			.catch(() => {
+				// console.log(error)
+			})
+	}
 	const columns = useMemo<ColumnDef<IData, unknown>[]>(
 		() =>
 			getColumnWithOrder([
 				{
-					header: 'Name',
+					header: 'name',
 					accessorKey: 'name',
 					Filter: TextColumnFilter,
 				},
 				// StatusColumnCell(statusOptions),
+				ActionColumnCell({ updateFunc: handleUpdateStart, deleteFunc: handleDelete }),
 			]),
 		[],
 	)
 
-	useEffect(() => {
-		getReferenceMainPagination(controller)
-	}, [])
-
-	return (
-		<>
-			<TableComponent data={data} columns={columns} loading={loading} onChange={params => getReferenceMainData(controller)} pagination={pagination} />
-		</>
-	)
+	return <TableComponent data={data} columns={columns} loading={loading} onChange={params => getReferenceMainData(controller)} />
 }
 
 export default ReferenceMainTable
