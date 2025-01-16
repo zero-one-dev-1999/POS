@@ -1,13 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { ChangeEvent, useLayoutEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { useReactTable, getCoreRowModel, flexRender, SortingState, getSortedRowModel, getFilteredRowModel, getPaginationRowModel, PaginationState } from '@tanstack/react-table'
 import { Card, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import Pagination from './Pagination'
 import { ColumnFilter, TableComponentProps } from './types'
 import SkeletonCell from './SkeletonCell'
 import { useTranslation } from 'react-i18next'
-import LazyImage from '../LazyImage'
-import Iconify from '../Iconify'
+import LazyImage from '../image'
+import Iconify from '../iconify'
 import { buildApiParams } from '@/utils/react-table'
 
 const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChange, loading = false }: TableComponentProps<T>) => {
@@ -16,10 +15,10 @@ const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChan
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFilter[]>([])
 	const [pagination, setPagination] = useState<PaginationState & { totalSize: number; pageCount: number }>({
-		pageIndex: (remotePagiation.page ?? 1) - 1,
-		pageSize: remotePagiation.sizePerPage ?? 10,
-		totalSize: remotePagiation.totalSize ?? 0,
-		pageCount: remotePagiation.pageCount ?? 0,
+		pageIndex: 0,
+		pageSize: 10,
+		totalSize: 0,
+		pageCount: 0,
 	})
 
 	const table = useReactTable({
@@ -58,9 +57,19 @@ const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChan
 		table.setPageIndex(newPage - 1)
 	}
 
+	useEffect(() => {
+		if (pagination) {
+			setPagination({
+				pageIndex: (remotePagiation.page ?? 1) - 1,
+				pageSize: remotePagiation.sizePerPage ?? 10,
+				totalSize: remotePagiation.totalSize ?? 0,
+				pageCount: remotePagiation.pageCount ?? 0,
+			})
+		}
+	}, [remotePagiation])
+
 	useLayoutEffect(() => {
 		if (onChange) {
-			console.log(11)
 			onChange(buildApiParams(pageIndex + 1, pageSize, sorting, columnFilters))
 		}
 	}, [columnFilters, sorting, pageIndex, pageSize])
@@ -177,7 +186,7 @@ const TableComponent = <T,>({ data, columns, pagination: remotePagiation, onChan
 					))}
 				</TableFooter> */}
 			</Table>
-
+			{/* <pre>{JSON.stringify(remotePagiation)}</pre> */}
 			{data.length !== 0 && pagination && pagination.pageCount > 1 && (
 				<Stack sx={{ p: 2 }}>
 					<Pagination page={pageIndex + 1} handleChange={pageChange} pageCount={pagination.pageCount} />

@@ -1,5 +1,5 @@
 import AuthGuard from '@/auth/auth-guard'
-import Loadable from '@/components/Loadable'
+import Loadable from '@/components/loadable'
 import {
 	POS_DASHBOARD_PAGE,
 	POS_PRODUCTS_PAGE,

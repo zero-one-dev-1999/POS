@@ -2,12 +2,12 @@ import { Button, Divider, Grid2, IconButton, InputAdornment, Stack, Typography }
 import { FC, useState } from 'react'
 import { Formik, Form, useFormikContext } from 'formik'
 import * as Yup from 'yup'
-import Iconify from '@/components/Iconify'
+import Iconify from '@/components/iconify'
 import { loginUser } from '@/firebase/firestore/users'
 import { Link } from 'react-router'
 import { POS_REGISTER_PAGE } from '@/helpers/pages'
 import { useTranslation } from 'react-i18next'
-import FormikInput from '@/components/FormikInput'
+import FormikInput from '@/components/input/FormikInput'
 
 const FormComponent: FC = () => {
 	const [showPassword, setShowPassword] = useState(false)

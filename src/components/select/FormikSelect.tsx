@@ -1,9 +1,18 @@
 import { Stack, InputLabel } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useFormikContext } from 'formik'
-import Select from 'components/select'
+import { FC } from 'react'
+import Select from '.'
 
-const FormikSelect = ({ field, label, required, options = [], childFields = [], onlySelect = false, ...props }) => {
+interface IProps {
+	field: string
+	label?: string
+	required?: boolean
+	options: Array<{ value: number | string; label: string }>
+	onlySelect?: boolean
+	readOnly?: boolean
+}
+const FormikSelect: FC<IProps & { getAvailableOptions: (options: any) => boolean }> = ({ field, label, required, options = [], onlySelect = false, ...props }) => {
 	const { getFieldMeta, getFieldProps, setFieldValue, setFieldTouched } = useFormikContext()
 	const [t] = useTranslation()
 
@@ -27,16 +36,16 @@ const FormikSelect = ({ field, label, required, options = [], childFields = [], 
 			setVal={val => {
 				setFieldValue(field, val)
 
-				childFields.forEach(childField => {
-					if (Array.isArray(childField)) {
-						// @ts-expect-error
-						getFieldMeta(childField[0]).value.forEach((v, index) => {
-							setFieldValue(`${childField[0]}[${index}].${childField[1]}`, getFieldMeta(`${childField[0]}[0].${childField[1]}`).initialValue)
-						})
-					} else {
-						setFieldValue(childField, getFieldMeta(childField).initialValue)
-					}
-				})
+				// childFields.forEach(childField => {
+				// 	if (Array.isArray(childField)) {
+				// 		// @ts-expect-error
+				// 		getFieldMeta(childField[0]).value.forEach((v, index) => {
+				// 			setFieldValue(`${childField[0]}[${index}].${childField[1]}`, getFieldMeta(`${childField[0]}[0].${childField[1]}`).initialValue)
+				// 		})
+				// 	} else {
+				// 		setFieldValue(childField, getFieldMeta(childField).initialValue)
+				// 	}
+				// })
 			}}
 		/>
 	)

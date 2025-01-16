@@ -1,4 +1,4 @@
-import LazyImage from '@/components/LazyImage'
+import LazyImage from '@/components/image'
 import { useModeContext } from '@/theme/modeContext'
 import { FC } from 'react'
 import { Link } from 'react-router'

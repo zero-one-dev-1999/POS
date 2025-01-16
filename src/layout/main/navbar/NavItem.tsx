@@ -2,7 +2,7 @@ import { Box, Tooltip, ListItemText } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { forwardRef } from 'react'
 import PropTypes from 'prop-types'
-import Iconify from '@/components/Iconify'
+import Iconify from '@/components/iconify'
 import { StyledIcon, StyledItem } from './styles'
 import { Link } from 'react-router'
 // @ts-expect-error

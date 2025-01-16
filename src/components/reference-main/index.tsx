@@ -1,96 +1,33 @@
-import { FC, useMemo, useState } from 'react'
-import { ColumnDef } from '@tanstack/react-table'
-import TableComponent from '../table'
-import { getColumnWithOrder, StatusColumnCell, TextColumnFilter } from '@/utils/react-table'
+import { Button, Card, Stack, Typography } from '@mui/material'
+import ReferenceMainTable from './Table'
+import { useTranslation } from 'react-i18next'
+import Iconify from '../iconify'
+import { FC } from 'react'
+import Form from './Form'
+import { useDispatch } from '@/hooks/use-dispatch'
+import { referenceMainActions } from '@/store/reference-main'
 
 interface IProps {
 	controller: string
 }
 
-interface IData {
-	id: number
-	name: string
-	age: number
-}
-
-const statusOptions = [
-	{ value: 1, label: 'Active' },
-	{ value: 2, label: 'Inactive' },
-	{ value: 3, label: 'Pending' },
-	{ value: 4, label: 'Blocked' },
-]
-
-const data1 = [
-	{
-		id: 1,
-		name: 'John Doe 1',
-		age: 30,
-		status: 1,
-	},
-	{
-		id: 2,
-		name: 'Jane Doe 2',
-		age: 20,
-		status: 2,
-	},
-	{
-		id: 1,
-		name: 'John Doe 1',
-		age: 30,
-		status: 3,
-	},
-	{
-		id: 2,
-		name: 'Jane Doe 2',
-		age: 20,
-		status: 4,
-	},
-	{
-		id: 1,
-		name: 'John Doe 1',
-		age: 30,
-		status: 1,
-	},
-	{
-		id: 2,
-		name: 'Jane Doe 2',
-		age: 20,
-		status: 2,
-	},
-]
-
 const ReferenceMain: FC<IProps> = ({ controller }) => {
-	const [loading, setLoading] = useState(false)
-	const [data, setData] = useState<IData[]>([])
+	const [t] = useTranslation()
+	const dispatch = useDispatch()
 
-	const columns = useMemo<ColumnDef<IData, unknown>[]>(
-		() =>
-			getColumnWithOrder([
-				{
-					header: 'Name',
-					accessorKey: 'name',
-					Filter: TextColumnFilter,
-				},
-				{
-					header: 'Age',
-					accessorKey: 'age',
-					Filter: TextColumnFilter,
-				},
-				StatusColumnCell(statusOptions),
-			]),
-		[],
+	return (
+		<Card>
+			<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} p={2}>
+				<Typography variant='h4'>{t(controller)}</Typography>
+
+				<Button variant='contained' color='primary' startIcon={<Iconify icon='ic:round-plus' />} onClick={() => dispatch(referenceMainActions.setFormIsOpen(true))}>
+					{t('add')}
+				</Button>
+			</Stack>
+			<ReferenceMainTable controller={controller} />
+			<Form controller={controller} />
+		</Card>
 	)
-
-	const getData1 = () => {
-		setLoading(true)
-
-		setTimeout(() => {
-			setData(data1)
-			setLoading(false)
-		}, 1000)
-	}
-
-	return <TableComponent data={data} columns={columns} loading={loading} onChange={params => getData1()} pagination={{ page: 1, sizePerPage: 15, pageCount: 5, totalSize: 70 }} />
 }
 
 export default ReferenceMain

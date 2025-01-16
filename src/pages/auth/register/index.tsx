@@ -1,12 +1,12 @@
 import { Button, Divider, Grid2, IconButton, InputAdornment, Stack, Typography } from '@mui/material'
 import { Form, Formik, useFormikContext } from 'formik'
 import { FC, useState } from 'react'
-import Iconify from '@/components/Iconify'
+import Iconify from '@/components/iconify'
 import { POS_LOGIN_PAGE } from '@/helpers/pages'
 import { Link } from 'react-router'
 import * as Yup from 'yup'
 import { registerUser } from '@/firebase/firestore/users'
-import FormikInput from '@/components/FormikInput'
+import FormikInput from '@/components/input/FormikInput'
 import { useTranslation } from 'react-i18next'
 
 const FormComponent: FC = () => {

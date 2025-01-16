@@ -1,7 +1,7 @@
 import { useSelector } from '@/hooks/use-selector'
 import { Avatar, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
 import { FC, MouseEvent, useState } from 'react'
-import Iconify from '@/components/Iconify'
+import Iconify from '@/components/iconify'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { appActions } from '@/store/app'
 import { useTranslation } from 'react-i18next'

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import { Autocomplete, AutocompleteProps, SxProps, TextField } from '@mui/material'
 import { ChangeEvent, ReactNode, useCallback, useMemo } from 'react'
 
@@ -12,7 +12,7 @@ interface SelectProps<T, Multiple extends boolean | undefined = false, DisableCl
 	helperText?: string
 	required?: boolean
 	textFieldOnChange?: (e: ChangeEvent<HTMLInputElement>) => void
-	getAvailableOptions?: () => void
+	getAvailableOptions?: (options: any) => boolean
 	withoutHelperText?: boolean
 	inputSx?: SxProps
 	setVal: (val: number | number[]) => void

@@ -1,5 +1,5 @@
 import GuestGuard from '@/auth/guest-guard'
-import Loadable from '@/components/Loadable'
+import Loadable from '@/components/loadable'
 import { POS_LOGIN_PAGE, POS_REGISTER_PAGE } from '@/helpers/pages'
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
