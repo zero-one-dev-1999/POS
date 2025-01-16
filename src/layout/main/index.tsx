@@ -11,7 +11,7 @@ const DashboardLayout: FC = () => {
 			</Stack>
 			<Divider sx={{ borderStyle: 'dashed' }} />
 			<Divider sx={{ borderStyle: 'dashed' }} />
-			<Stack sx={{ px: { sm: 2, lg: 4 }, py: 2, height: 'calc(100vh - 82px)', overflowY: 'auto' }}>
+			<Stack sx={{ px: { sm: 2, lg: 4 }, py: 4, height: 'calc(100vh - 82px)', overflowY: 'auto' }}>
 				<Outlet />
 			</Stack>
 		</>

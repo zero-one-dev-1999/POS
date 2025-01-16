@@ -36,12 +36,13 @@ export const getColumnWithOrder = (columns: any[]) => {
 }
 
 export const TextColumnFilter: FC<any> = ({ column }) => {
+	const [t] = useTranslation()
 	return (
 		<TextField
 			value={column.getFilterValue() || ''}
 			size='small'
 			onChange={e => column.setFilterValue(e.target.value)}
-			placeholder={column.columnDef.header ?? ''}
+			placeholder={t(column.columnDef.header ?? '')}
 			sx={{ width: '100%' }}
 		/>
 	)

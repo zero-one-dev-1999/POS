@@ -115,7 +115,6 @@ const TableComponent = <T,>({ data, columns, onChange, loading = false }: TableC
 							{headerGroup.headers.map(header => (
 								// @ts-expect-error
 								<TableCell key={header.id} sx={{ ...header.column.columnDef?.style, padding: '10px' }}>
-									{/* @ts-expect-error */}
 									{header.column.getCanFilter() &&
 										(header.column.columnDef.Filter ? (
 											<header.column.columnDef.Filter {...header.getContext()} />
