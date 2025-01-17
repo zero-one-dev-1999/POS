@@ -4,10 +4,10 @@ interface ILang {
 	icon: string
 }
 
-const allLangs: ILang[] = [
+const languageList: ILang[] = [
 	{
 		value: 'uz',
-		label: "O'zbekcha",
+		label: "O'zbek",
 		icon: '/flags/uz.svg',
 	},
 	{
@@ -22,4 +22,4 @@ const allLangs: ILang[] = [
 	},
 ]
 
-export { allLangs }
+export { languageList }

@@ -1,4 +1,4 @@
-import { allLangs } from '@/i18n/config'
+import { languageList } from '@/i18n/config'
 import { Avatar, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
 import { MouseEvent, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,7 +8,7 @@ const Language = () => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 	const open = Boolean(anchorEl)
 
-	const currentLang = useMemo(() => allLangs.find(f => f.value === i18n.language), [i18n.language])
+	const currentLang = useMemo(() => languageList.find(f => f.value === i18n.language), [i18n.language])
 
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget)
@@ -66,7 +66,7 @@ const Language = () => {
 				transformOrigin={{ horizontal: 'right', vertical: 'top' }}
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 			>
-				{allLangs.map(lang => (
+				{languageList.map(lang => (
 					<MenuItem key={lang.value} onClick={() => handleSelect(lang.value)} sx={{ pr: 6 }} selected={lang.value === currentLang?.value}>
 						<Avatar src={lang.icon} />
 						<Typography variant='body2'>{lang.label}</Typography>

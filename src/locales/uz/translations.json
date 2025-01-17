@@ -43,5 +43,8 @@
 	"or": "yoki",
 	"no-data": "Ma'lumotlar mavjud emas",
 	"name": "Nomi",
-	"actions": "Amallar"
+	"actions": "Amallar",
+	"no": "Yo'q",
+	"yes": "Ha",
+	"are-you-sure": "Ishonchingiz komilmi?"
 }

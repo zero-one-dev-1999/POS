@@ -43,5 +43,8 @@
 	"or": "Or",
 	"no-data": "No data",
 	"name": "Name",
-	"actions": "Actions"
+	"actions": "Actions",
+	"no": "No",
+	"yes": "Yes",
+	"are-you-sure": "Are you sure?"
 }

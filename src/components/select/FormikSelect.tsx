@@ -12,7 +12,7 @@ interface IProps {
 	onlySelect?: boolean
 	readOnly?: boolean
 }
-const FormikSelect: FC<IProps & { getAvailableOptions: (options: any) => boolean }> = ({ field, label, required, options = [], onlySelect = false, ...props }) => {
+const FormikSelect: FC<IProps & { getAvailableOptions?: (options: any) => boolean }> = ({ field, label, required, options = [], onlySelect = false, ...props }) => {
 	const { getFieldMeta, getFieldProps, setFieldValue, setFieldTouched } = useFormikContext()
 	const [t] = useTranslation()
 

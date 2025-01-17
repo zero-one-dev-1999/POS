@@ -11,12 +11,7 @@ import { useDispatch } from '@/hooks/use-dispatch'
 import { referenceMainActions } from '@/store/reference-main'
 import { createReferenceMainDoc, getReferenceMainData, updateReferenceMainDoc } from '@/firebase/firestore/reference-main'
 import Loader from '../loader'
-
-const langList = [
-	{ value: 'uz', label: 'O`zbek' },
-	{ value: 'en', label: 'English' },
-	{ value: 'ru', label: 'Russian' },
-]
+import { languageList } from '@/i18n/config'
 
 const Form: FC<{ controller: string }> = ({ controller }) => {
 	const [t] = useTranslation()
@@ -54,13 +49,13 @@ const Form: FC<{ controller: string }> = ({ controller }) => {
 				dispatch(referenceMainActions.setFormLoading(false))
 				dispatch(referenceMainActions.setFormIsOpen(false))
 				getReferenceMainData(controller)
-			}, 600)
+			}, 500)
 		},
 	})
 
 	useEffect(() => {
 		if (!isUpdate && isOpen) {
-			formik.setFieldValue(`translations[0].lang_short_name`, langList.find(f => f.value === 'uz')?.value)
+			formik.setFieldValue(`translations[0].lang_short_name`, languageList.find(f => f.value === 'uz')?.value)
 		}
 	}, [isOpen, isUpdate])
 
@@ -105,7 +100,7 @@ const Form: FC<{ controller: string }> = ({ controller }) => {
 												<FormikSelect
 													field={`translations[${index}].lang_short_name`}
 													label={t('language')}
-													options={langList}
+													options={languageList}
 													readOnly={item.lang_short_name === 'uz'}
 													required={item.lang_short_name === 'uz'}
 													getAvailableOptions={options => !formik.values.translations?.find(f => f?.lang_short_name === options.value)}
@@ -117,7 +112,7 @@ const Form: FC<{ controller: string }> = ({ controller }) => {
 														<FormikInput required={item.lang_short_name === 'uz'} field={`translations[${index}].name`} label={t('name')} />
 													</Stack>
 													<Stack spacing={1} direction='row' alignItems='center' justifyContent='center' pt={2.5}>
-														{formik.values.translations?.length !== langList?.length && (
+														{formik.values.translations?.length !== languageList?.length && (
 															<IconButton type='button' color='success' onClick={() => push(formik.initialValues.translations[0])}>
 																<Iconify icon='ph:plus' />
 															</IconButton>

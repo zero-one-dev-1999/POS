@@ -43,7 +43,7 @@ const ReferenceMainTable: FC<{ controller: string }> = ({ controller }) => {
 
 		setTimeout(() => {
 			dispatch(referenceMainActions.setFormLoading(false))
-		}, 600)
+		}, 500)
 	}
 
 	const handleDelete = (id: string) => {
@@ -54,6 +54,7 @@ const ReferenceMainTable: FC<{ controller: string }> = ({ controller }) => {
 			titleProps: { textAlign: 'center' },
 			cancellationButtonProps: { color: 'error', variant: 'outlined' },
 			confirmationButtonProps: { color: 'success', variant: 'contained' },
+			dialogProps: { maxWidth: 'xs' },
 		})
 			.then(() => {
 				deleteReferenceMainDoc(controller, id)
@@ -62,7 +63,7 @@ const ReferenceMainTable: FC<{ controller: string }> = ({ controller }) => {
 
 				setTimeout(() => {
 					getReferenceMainData(controller)
-				}, 600)
+				}, 500)
 			})
 			.catch(() => {
 				// console.log(error)
