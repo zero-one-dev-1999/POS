@@ -36,12 +36,12 @@ const MenuItems = [
 			{
 				title: 'income',
 				icon: 'mdi:application-import',
-				path: pages.POS_WAREHOUSE_INCOME_PAGE,
+				path: pages.POS_WAREHOUSE_INCOME_INDEX_PAGE,
 			},
 			{
 				title: 'outcome',
 				icon: 'mdi:application-export',
-				path: pages.POS_WAREHOUSE_OUTCOME_PAGE,
+				path: pages.POS_WAREHOUSE_OUTCOME_INDEX_PAGE,
 			},
 		],
 	},

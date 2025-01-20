@@ -75,7 +75,7 @@ const TableComponent = <T,>({ data, columns, onChange, loading = false }: TableC
 	}, [columnFilters, sorting, language, location.pathname])
 
 	return (
-		<TableContainer component={Card}>
+		<>
 			<Table size='small'>
 				<TableHead>
 					{table.getHeaderGroups().map(headerGroup => (
@@ -87,7 +87,7 @@ const TableComponent = <T,>({ data, columns, onChange, loading = false }: TableC
 										{flexRender(t(header.column.columnDef.header), header.getContext())}
 										<span
 											style={{
-												paddingLeft: '8px',
+												// paddingLeft: '8px',
 												display: 'flex',
 												alignItems: 'center',
 												justifyContent: 'center',
@@ -114,7 +114,7 @@ const TableComponent = <T,>({ data, columns, onChange, loading = false }: TableC
 						<TableRow className='odd' key={headerGroup.id}>
 							{headerGroup.headers.map(header => (
 								// @ts-expect-error
-								<TableCell key={header.id} sx={{ ...header.column.columnDef?.style, padding: '10px' }}>
+								<TableCell key={header.id} sx={{ ...header.column.columnDef?.style }}>
 									{header.column.getCanFilter() &&
 										(header.column.columnDef.Filter ? (
 											<header.column.columnDef.Filter {...header.getContext()} />
@@ -134,7 +134,7 @@ const TableComponent = <T,>({ data, columns, onChange, loading = false }: TableC
 										sx={{
 											// @ts-expect-error
 											...cell.column.columnDef?.style,
-											padding: '8px',
+											// padding: '8px',
 										}}
 									>
 										{loading ? <SkeletonCell /> : flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -192,7 +192,7 @@ const TableComponent = <T,>({ data, columns, onChange, loading = false }: TableC
 					<Pagination page={pageIndex + 1} handleChange={pageChange} pageCount={pagination.pageCount} />
 				</Stack>
 			)} */}
-		</TableContainer>
+		</>
 	)
 }
 

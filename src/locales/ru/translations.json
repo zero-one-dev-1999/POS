@@ -46,5 +46,8 @@
 	"actions": "Действия",
 	"no": "Нет",
 	"yes": "Да",
-	"are-you-sure": "Вы уверены?"
+	"are-you-sure": "Вы уверены?",
+	"go-back": "Назад",
+	"buying-price": "Цена закупки",
+	"selling-price": "Цена продажи"
 }

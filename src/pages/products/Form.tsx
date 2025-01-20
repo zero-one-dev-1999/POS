@@ -13,6 +13,8 @@ import { productsActions } from '@/store/products'
 import { languageList } from '@/i18n/config'
 import { createProductDoc, updateProductDoc } from '@/firebase/firestore/products'
 import Loader from '@/components/loader'
+import SaveButton from '@/components/button/SaveButton'
+import CancelButton from '@/components/button/CancelButton'
 
 const FormComponent: FC<FormikProps<IProduct>> = ({ handleSubmit, values, initialValues, resetForm, setFieldValue, setValues }) => {
 	const [t] = useTranslation()
@@ -117,20 +119,13 @@ const FormComponent: FC<FormikProps<IProduct>> = ({ handleSubmit, values, initia
 			</DialogContent>
 			<Divider />
 			<DialogActions>
-				<Button
-					type='button'
+				<CancelButton
 					onClick={() => {
 						dispatch(productsActions.setFormIsOpen(false))
 						resetForm()
 					}}
-					color='error'
-					variant='outlined'
-				>
-					{t('cancel')}
-				</Button>
-				<Button type='submit' color='success' variant='contained'>
-					{t('save')}
-				</Button>
+				/>
+				<SaveButton />
 			</DialogActions>
 		</FormikForm>
 	)
@@ -138,7 +133,6 @@ const FormComponent: FC<FormikProps<IProduct>> = ({ handleSubmit, values, initia
 
 const Form: FC = () => {
 	const [t] = useTranslation()
-	const dispatch = useDispatch()
 
 	const { isOpen, isUpdate } = useSelector(({ Products: s }) => ({
 		isOpen: s.form.isOpen,

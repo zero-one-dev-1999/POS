@@ -11,6 +11,7 @@ interface IProps {
 	options: Array<{ value: number | string; label: string }>
 	onlySelect?: boolean
 	readOnly?: boolean
+	[key: string]: any
 }
 const FormikSelect: FC<IProps & { getAvailableOptions?: (options: any) => boolean }> = ({ field, label, required, options = [], onlySelect = false, ...props }) => {
 	const { getFieldMeta, getFieldProps, setFieldValue, setFieldTouched } = useFormikContext()

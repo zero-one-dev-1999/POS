@@ -46,5 +46,8 @@
 	"actions": "Actions",
 	"no": "No",
 	"yes": "Yes",
-	"are-you-sure": "Are you sure?"
+	"are-you-sure": "Are you sure?",
+	"go-back": "Go back",
+	"buying-price": "Buying price",
+	"selling-price": "Selling price"
 }

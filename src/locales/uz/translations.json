@@ -46,5 +46,8 @@
 	"actions": "Amallar",
 	"no": "Yo'q",
 	"yes": "Ha",
-	"are-you-sure": "Ishonchingiz komilmi?"
+	"are-you-sure": "Ishonchingiz komilmi?",
+	"go-back": "Orqaga",
+	"selling-price": "Sotuv narxi",
+	"buying-price": "Sotib olish narxi"
 }

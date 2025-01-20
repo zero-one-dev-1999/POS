@@ -7,8 +7,11 @@ import {
 	POS_REFERENCE_CURRENCY_PAGE,
 	POS_REFERENCE_UNIT_PAGE,
 	POS_SELLING_PAGE,
-	POS_WAREHOUSE_INCOME_PAGE,
-	POS_WAREHOUSE_OUTCOME_PAGE,
+	POS_WAREHOUSE_INCOME_CREATE_PAGE,
+	POS_WAREHOUSE_INCOME_INDEX_PAGE,
+	POS_WAREHOUSE_INCOME_UPDATE_PAGE,
+	POS_WAREHOUSE_INCOME_VIEW_PAGE,
+	POS_WAREHOUSE_OUTCOME_INDEX_PAGE,
 } from '@/helpers/pages'
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
@@ -16,6 +19,9 @@ import { Navigate } from 'react-router-dom'
 const DashboardLayout = Loadable(lazy(() => import('@/layout/main')))
 const DashboardPage = Loadable(lazy(() => import('@/pages/dashboard')))
 const WarehouseIncomePage = Loadable(lazy(() => import('@/pages/warehouse/income')))
+const WarehouseIncomeCreatePage = Loadable(lazy(() => import('@/pages/warehouse/income/Create')))
+const WarehouseIncomeUpdatePage = Loadable(lazy(() => import('@/pages/warehouse/income/Update')))
+const WarehouseIncomeViewPage = Loadable(lazy(() => import('@/pages/warehouse/income/View')))
 const WarehouseOutcomePage = Loadable(lazy(() => import('@/pages/warehouse/outcome')))
 const SellingPage = Loadable(lazy(() => import('@/pages/selling')))
 const ProductsPage = Loadable(lazy(() => import('@/pages/products')))
@@ -45,11 +51,23 @@ const MainRoutes = {
 					element: <DashboardPage />,
 				},
 				{
-					path: POS_WAREHOUSE_INCOME_PAGE,
+					path: POS_WAREHOUSE_INCOME_INDEX_PAGE,
 					element: <WarehouseIncomePage />,
 				},
 				{
-					path: POS_WAREHOUSE_OUTCOME_PAGE,
+					path: POS_WAREHOUSE_INCOME_CREATE_PAGE,
+					element: <WarehouseIncomeCreatePage />,
+				},
+				{
+					path: POS_WAREHOUSE_INCOME_UPDATE_PAGE,
+					element: <WarehouseIncomeUpdatePage />,
+				},
+				{
+					path: POS_WAREHOUSE_INCOME_VIEW_PAGE,
+					element: <WarehouseIncomeViewPage />,
+				},
+				{
+					path: POS_WAREHOUSE_OUTCOME_INDEX_PAGE,
 					element: <WarehouseOutcomePage />,
 				},
 				{
