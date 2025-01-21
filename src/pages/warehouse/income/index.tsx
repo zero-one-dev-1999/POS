@@ -1,15 +1,12 @@
-import Iconify from '@/components/iconify'
-import { Button, Card, Stack, Typography } from '@mui/material'
+import { Card, Stack, Typography } from '@mui/material'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import Table from './Table'
-import { useNavigate } from 'react-router'
 import { POS_WAREHOUSE_INCOME_CREATE_PAGE } from '@/helpers/pages'
 import CreateButton from '@/components/button/CreateButton'
 
 const Income: FC = () => {
 	const [t] = useTranslation()
-	const navigate = useNavigate()
 
 	return (
 		<Card>

@@ -11,7 +11,10 @@ import {
 	POS_WAREHOUSE_INCOME_INDEX_PAGE,
 	POS_WAREHOUSE_INCOME_UPDATE_PAGE,
 	POS_WAREHOUSE_INCOME_VIEW_PAGE,
+	POS_WAREHOUSE_OUTCOME_CREATE_PAGE,
 	POS_WAREHOUSE_OUTCOME_INDEX_PAGE,
+	POS_WAREHOUSE_OUTCOME_UPDATE_PAGE,
+	POS_WAREHOUSE_OUTCOME_VIEW_PAGE,
 } from '@/helpers/pages'
 import { lazy } from 'react'
 import { Navigate } from 'react-router-dom'
@@ -23,6 +26,9 @@ const WarehouseIncomeCreatePage = Loadable(lazy(() => import('@/pages/warehouse/
 const WarehouseIncomeUpdatePage = Loadable(lazy(() => import('@/pages/warehouse/income/Update')))
 const WarehouseIncomeViewPage = Loadable(lazy(() => import('@/pages/warehouse/income/View')))
 const WarehouseOutcomePage = Loadable(lazy(() => import('@/pages/warehouse/outcome')))
+const WarehouseOutcomeCreatePage = Loadable(lazy(() => import('@/pages/warehouse/outcome/Create')))
+const WarehouseOutcomeUpdatePage = Loadable(lazy(() => import('@/pages/warehouse/outcome/Update')))
+const WarehouseOutcomeViewPage = Loadable(lazy(() => import('@/pages/warehouse/outcome/View')))
 const SellingPage = Loadable(lazy(() => import('@/pages/selling')))
 const ProductsPage = Loadable(lazy(() => import('@/pages/products')))
 const ReferenceMain = Loadable(lazy(() => import('@/components/reference-main')))
@@ -69,6 +75,18 @@ const MainRoutes = {
 				{
 					path: POS_WAREHOUSE_OUTCOME_INDEX_PAGE,
 					element: <WarehouseOutcomePage />,
+				},
+				{
+					path: POS_WAREHOUSE_OUTCOME_CREATE_PAGE,
+					element: <WarehouseOutcomeCreatePage />,
+				},
+				{
+					path: POS_WAREHOUSE_OUTCOME_UPDATE_PAGE,
+					element: <WarehouseOutcomeUpdatePage />,
+				},
+				{
+					path: POS_WAREHOUSE_OUTCOME_VIEW_PAGE,
+					element: <WarehouseOutcomeViewPage />,
 				},
 				{
 					path: POS_SELLING_PAGE,

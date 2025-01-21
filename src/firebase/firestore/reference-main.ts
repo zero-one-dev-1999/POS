@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, getFirestore, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
+import { addDoc, collection, getDocs, getFirestore, getDoc, doc, updateDoc, deleteDoc, query, where } from 'firebase/firestore'
 import { app } from '../config'
 import { referenceMainActions } from '@/store/reference-main'
 import { store } from '@/store'
@@ -6,8 +6,11 @@ import { store } from '@/store'
 const db = getFirestore(app)
 
 export const getReferenceMainData = async (controller: string) => {
+	const user_id = store.getState().App.user?.id
+
 	store.dispatch(referenceMainActions.setDataLoading(true))
-	const response = await getDocs(collection(db, `reference-main-${controller}`))
+	// const response = await getDocs(collection(db, `reference-main-${controller}`))
+	const response = await getDocs(query(collection(db, `reference-main-${controller}`), where('user_id', '==', user_id)))
 	const language = localStorage.getItem('i18nextLng')
 
 	setTimeout(() => {
@@ -29,7 +32,8 @@ export const getReferenceMainData = async (controller: string) => {
 }
 
 export const createReferenceMainDoc = async (controller: string, payload: any) => {
-	await addDoc(collection(db, `reference-main-${controller}`), payload)
+	const user_id = store.getState().App.user?.id
+	await addDoc(collection(db, `reference-main-${controller}`), { ...payload, user_id, status: 1 })
 }
 
 export const updateStartReferenceMainDoc = async (controller: string, id: string) => {

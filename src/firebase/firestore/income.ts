@@ -1,7 +1,7 @@
 import { IFormValues } from '@/store/warehouse/income/types'
 import { store } from '@/store'
 import { warehouseIncomeActions } from '@/store/warehouse/income'
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore'
 import { app } from '../config'
 import { addProductsInWarehouse, getProductsInWarehouse, updateProductsInWarehouse } from './warehouse'
 import { convertTimestampToDate } from '@/utils/date'
@@ -11,8 +11,9 @@ const db = getFirestore(app)
 const incomeRef = collection(db, 'warehouse-income')
 
 export const getIncomeDocs = async () => {
+	const user_id = store.getState().App.user?.id
 	store.dispatch(warehouseIncomeActions.setDataLoading(true))
-	const response = await getDocs(incomeRef)
+	const response = await getDocs(query(incomeRef, where('user_id', '==', user_id)))
 
 	setTimeout(() => {
 		store.dispatch(
@@ -29,8 +30,9 @@ export const getIncomeDocs = async () => {
 }
 
 export const createIncomeDoc = async (payload: IFormValues, cb: (id: string) => void) => {
+	const user_id = store.getState().App.user?.id
 	store.dispatch(warehouseIncomeActions.setFormLoading(true))
-	const response = await addDoc(incomeRef, { ...payload, status: 1 })
+	const response = await addDoc(incomeRef, { ...payload, status: 1, user_id })
 
 	setTimeout(() => {
 		store.dispatch(warehouseIncomeActions.setFormLoading(false))
@@ -116,19 +118,19 @@ export const saveAndFinishIncomeDoc = async (id: string) => {
 	// warehouse-income part end
 
 	// warehouse part start
+	const user_id = store.getState().App.user?.id
 	const { id: docId, products } = await getProductsInWarehouse()
 
 	const resultProducts = products?.length ? [...products] : []
 
 	data.document_items.forEach(item => {
-		if (resultProducts.find(product => product.product_id === item.product_id)) {
-			const index = resultProducts.findIndex(product => product.product_id === item.product_id)
+		if (resultProducts.find(product => product.product_id === item.product_id && product.user_id === user_id)) {
+			const index = resultProducts.findIndex(product => product.product_id === item.product_id && product.user_id === user_id)
 			resultProducts[index].quantity = resultProducts[index].quantity + (item?.quantity ?? 0)
 			resultProducts[index].buying_price = item?.buying_price ?? resultProducts[index].buying_price
 			resultProducts[index].selling_price = item?.selling_price ?? resultProducts[index].selling_price
 		} else {
-			// @ts-ignore
-			resultProducts.push(item)
+			resultProducts.push({ ...item, user_id })
 		}
 	})
 

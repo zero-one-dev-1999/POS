@@ -3,33 +3,33 @@ import FormikInput from '@/components/input/FormikInput'
 import FormikSelect from '@/components/select/FormikSelect'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { useSelector } from '@/hooks/use-selector'
-import { Card, CardHeader, DialogActions, DialogContent, Divider, Grid2, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import { Card, CardHeader, Chip, DialogActions, DialogContent, Divider, Grid2, IconButton, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { FieldArray, Formik, Form as FormikForm, FormikProps } from 'formik'
 import { FC, useEffect, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as Yup from 'yup'
-import { warehouseIncomeActions } from '@/store/warehouse/income'
+import { warehouseOutcomeActions } from '@/store/warehouse/outcome'
 
 import Loader from '@/components/loader'
-import { IFormValues } from '../../../store/warehouse/income/types'
 import GoBackButton from '@/components/button/GoBackButton'
-import { POS_WAREHOUSE_INCOME_INDEX_PAGE, POS_WAREHOUSE_INCOME_VIEW_PAGE } from '@/helpers/pages'
+import { POS_WAREHOUSE_OUTCOME_INDEX_PAGE, POS_WAREHOUSE_OUTCOME_VIEW_PAGE } from '@/helpers/pages'
 import SaveButton from '@/components/button/SaveButton'
 import FormikDatePicker from '@/components/datepicker'
-import { createIncomeDoc, updateIncomeDoc } from '@/firebase/firestore/income'
+import { createOutcomeDoc, updateOutcomeDoc } from '@/firebase/firestore/outcome'
 
 import { v4 as uuidv4 } from 'uuid'
 import { generatePath, useNavigate } from 'react-router'
+import { IOutcomeFormValues } from '@/store/warehouse/outcome/types'
 
 function generateNumericUUID(length = 6) {
 	const uuid = uuidv4().replace(/\D/g, '')
 	return uuid.slice(0, length)
 }
-const FormComponent: FC<FormikProps<IFormValues>> = ({ handleSubmit, values, initialValues, setFieldValue, setValues }) => {
+const FormComponent: FC<FormikProps<IOutcomeFormValues>> = ({ handleSubmit, values, initialValues, setFieldValue, setValues }) => {
 	const [t] = useTranslation()
 	const dispatch = useDispatch()
 
-	const { isUpdate, isLoading, formValues } = useSelector(({ WarehouseIncome: s }) => ({
+	const { isUpdate, isLoading, formValues } = useSelector(({ WarehouseOutcome: s }) => ({
 		isUpdate: s.form.isUpdate,
 		isLoading: s.loading.form,
 		formValues: s.form.values,
@@ -45,7 +45,7 @@ const FormComponent: FC<FormikProps<IFormValues>> = ({ handleSubmit, values, ini
 
 	useLayoutEffect(() => {
 		return () => {
-			dispatch(warehouseIncomeActions.resetForm())
+			dispatch(warehouseOutcomeActions.resetForm())
 		}
 	}, [])
 
@@ -86,8 +86,6 @@ const FormComponent: FC<FormikProps<IFormValues>> = ({ handleSubmit, values, ini
 											<TableCell sx={{ width: '50px' }}>№</TableCell>
 											<TableCell sx={{ minWidth: '300px' }}>{t('product')}</TableCell>
 											<TableCell>{t('quantity')}</TableCell>
-											<TableCell>{t('buying-price')}</TableCell>
-											<TableCell>{t('selling-price')}</TableCell>
 											<TableCell>{t('currency')}</TableCell>
 											<TableCell sx={{ width: '50px' }}>
 												<IconButton type='button' color='success' onClick={() => push(initialValues.document_items[0])}>
@@ -97,36 +95,52 @@ const FormComponent: FC<FormikProps<IFormValues>> = ({ handleSubmit, values, ini
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{values.document_items?.map((_, index) => (
+										{values.document_items?.map((item, index) => (
 											<TableRow key={index}>
 												<TableCell>{index + 1}</TableCell>
 												<TableCell>
 													<FormikSelect
 														withoutHelperText
 														field={`document_items[${index}].product_id`}
-														options={lists.productsList}
+														options={lists.productsInWarehouseList}
 														getAvailableOptions={options => !values.document_items?.find(f => f?.product_id === options.value)}
-														onChange={(val: { currency_id: number; category_id: number; unit_id: number }) => {
+														onChange={(val: { currency_id: string }) => {
+															setFieldValue(`document_items[${index}].quantity`, undefined)
 															if (val?.currency_id) {
 																setFieldValue(`document_items[${index}].currency_id`, val?.currency_id)
-																setFieldValue(`document_items[${index}].category_id`, val?.category_id)
-																setFieldValue(`document_items[${index}].unit_id`, val?.unit_id)
 															} else {
 																setFieldValue(`document_items[${index}].currency_id`, '')
-																setFieldValue(`document_items[${index}].category_id`, '')
-																setFieldValue(`document_items[${index}].unit_id`, '')
 															}
 														}}
 													/>
 												</TableCell>
 												<TableCell>
-													<FormikInput withoutHelperText type='number' field={`document_items[${index}].quantity`} />
-												</TableCell>
-												<TableCell>
-													<FormikInput withoutHelperText type='number' field={`document_items[${index}].buying_price`} />
-												</TableCell>
-												<TableCell>
-													<FormikInput withoutHelperText type='number' field={`document_items[${index}].selling_price`} />
+													<FormikInput
+														withoutHelperText
+														disabled={!item.product_id}
+														type='number'
+														field={`document_items[${index}].quantity`}
+														onChange={e => {
+															const remain = lists.productsInWarehouseList?.find(f => f?.value === item.product_id)?.remain
+															if (Number(e.target.value) > remain) {
+																setFieldValue(`document_items[${index}].quantity`, remain)
+																alert(t('not-enough-quantity'))
+															} else {
+																setFieldValue(`document_items[${index}].quantity`, e.target.value)
+															}
+														}}
+														InputProps={{
+															endAdornment: (
+																<InputAdornment position='end'>
+																	{lists.productsInWarehouseList?.find(f => f?.value === item.product_id)?.remain > 0 ? (
+																		<Chip size='small' color='warning' label={lists.productsInWarehouseList?.find(f => f?.value === item.product_id)?.remain} />
+																	) : (
+																		''
+																	)}
+																</InputAdornment>
+															),
+														}}
+													/>
 												</TableCell>
 												<TableCell>
 													<FormikSelect withoutHelperText readOnly field={`document_items[${index}].currency_id`} options={lists.currenciesList} />
@@ -147,7 +161,7 @@ const FormComponent: FC<FormikProps<IFormValues>> = ({ handleSubmit, values, ini
 			</DialogContent>
 			<Divider />
 			<DialogActions sx={{ py: 2, px: 3 }}>
-				<GoBackButton path={POS_WAREHOUSE_INCOME_INDEX_PAGE} />
+				<GoBackButton path={POS_WAREHOUSE_OUTCOME_INDEX_PAGE} />
 				<SaveButton />
 			</DialogActions>
 		</FormikForm>
@@ -158,7 +172,7 @@ const Form: FC = () => {
 	const [t] = useTranslation()
 	const navigate = useNavigate()
 
-	const { isUpdate } = useSelector(({ WarehouseIncome: s }) => ({
+	const { isUpdate } = useSelector(({ WarehouseOutcome: s }) => ({
 		isUpdate: s.form.isUpdate,
 	}))
 
@@ -175,11 +189,7 @@ const Form: FC = () => {
 						{
 							product_id: '',
 							quantity: undefined,
-							buying_price: undefined,
-							selling_price: undefined,
 							currency_id: '',
-							category_id: '',
-							unit_id: '',
 						},
 					],
 				}}
@@ -189,14 +199,12 @@ const Form: FC = () => {
 						Yup.object({
 							product_id: Yup.string().required(),
 							quantity: Yup.number().required(),
-							buying_price: Yup.number().required(),
-							selling_price: Yup.number().required(),
 							currency_id: Yup.string().required(),
 						}),
 					),
 				})}
 				onSubmit={values => {
-					;(isUpdate ? updateIncomeDoc : createIncomeDoc)(values, id => navigate(generatePath(POS_WAREHOUSE_INCOME_VIEW_PAGE, { id })))
+					;(isUpdate ? updateOutcomeDoc : createOutcomeDoc)(values, id => navigate(generatePath(POS_WAREHOUSE_OUTCOME_VIEW_PAGE, { id })))
 				}}
 			/>
 		</Card>

@@ -4,6 +4,8 @@ interface IDocItem {
 	buying_price: number | undefined
 	selling_price: number | undefined
 	currency_id: string
+	category_id: string
+	unit_id: string
 }
 
 interface IFormValues {
@@ -21,4 +23,4 @@ interface IData {
 	document_items: IDocItem[]
 }
 
-export type { IFormValues, IData }
+export type { IFormValues, IData, IDocItem as IIncomeDocItem }

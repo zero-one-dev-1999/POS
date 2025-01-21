@@ -8,18 +8,20 @@ interface IStatusList {
 interface IList {
 	value: string
 	label: string
+	[key: string]: any
 }
 
-interface ILists {
-	[key: string]: IList[]
-}
+type ListsKeys = 'categoriesList' | 'unitsList' | 'productsList' | 'currenciesList' | 'productsInWarehouseList'
 
-const initialState: { lists: ILists; statusList: IStatusList[] } = {
+type Lists = Record<ListsKeys, IList[]>
+
+const initialState: { lists: Lists; statusList: IStatusList[] } = {
 	lists: {
 		categoriesList: [],
 		unitsList: [],
 		productsList: [],
 		currenciesList: [],
+		productsInWarehouseList: [],
 	},
 	statusList: [
 		{ value: 1, label: 'Saqlanmagan' },

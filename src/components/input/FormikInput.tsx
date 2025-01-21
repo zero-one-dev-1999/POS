@@ -23,6 +23,7 @@ const FormikInput: FC<TextFieldProps & FormikInputProps> = ({
 	InputProps = {},
 	readOnly = false,
 	required = false,
+	onChange,
 	withoutHelperText = false,
 	...props
 }) => {
@@ -41,6 +42,7 @@ const FormikInput: FC<TextFieldProps & FormikInputProps> = ({
 					type={type}
 					size={size}
 					{...fieldProps}
+					onChange={onChange ?? fieldProps.onChange}
 					inputProps={{ max, min }}
 					value={fieldProps.value || ''}
 					// @ts-expect-error

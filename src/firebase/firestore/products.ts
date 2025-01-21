@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore'
 import { app } from '../config'
 import { store } from '@/store'
 import { productsActions } from '@/store/products'
@@ -10,10 +10,11 @@ const db = getFirestore(app)
 const productsRef = collection(db, 'products')
 
 export const getProductsData = async () => {
+	const user_id = store.getState().App.user?.id
 	const language = localStorage.getItem('i18nextLng')
 	store.dispatch(productsActions.setDataLoading(true))
 
-	const response = await getDocs(productsRef)
+	const response = await getDocs(query(productsRef, where('user_id', '==', user_id)))
 
 	setTimeout(() => {
 		store.dispatch(
@@ -35,14 +36,13 @@ export const getProductsData = async () => {
 }
 
 export const createProductDoc = async (payload: IProduct) => {
+	const user_id = store.getState().App.user?.id
 	store.dispatch(productsActions.setFormLoading(true))
-	await addDoc(productsRef, payload)
+	await addDoc(productsRef, { ...payload, user_id, status: 1 })
 
-	setTimeout(() => {
-		store.dispatch(productsActions.setFormLoading(false))
-		store.dispatch(productsActions.setFormIsOpen(false))
-		getProductsData()
-	}, 300)
+	store.dispatch(productsActions.setFormLoading(false))
+	store.dispatch(productsActions.setFormIsOpen(false))
+	getProductsData()
 }
 
 export const updateStartProductDoc = async (id: string) => {

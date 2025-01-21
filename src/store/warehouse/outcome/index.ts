@@ -1,6 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { IData, IFormValues } from './types'
 
-const initialState = {
+interface IState {
+	data: IData[]
+	loading: {
+		data: boolean
+		form: boolean
+	}
+	pagination: {
+		page: number
+		sizePerPage: number
+		totalSize: number
+		pageCount: number
+	}
+	form: {
+		isUpdate: boolean
+		values: IFormValues | null
+	}
+	view: IFormValues | null
+}
+
+const initialState: IState = {
 	data: [],
 	loading: {
 		data: false,
@@ -35,6 +55,10 @@ const { actions, reducer } = createSlice({
 		},
 		setView(state, { payload }) {
 			state.view = payload
+		},
+		setStatus(state, { payload }) {
+			if (!state.view) return
+			state.view = { ...state.view, status: payload }
 		},
 		resetForm(state) {
 			state.form.isUpdate = false
