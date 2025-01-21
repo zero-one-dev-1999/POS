@@ -6,7 +6,7 @@ import { darkMode, lightMode } from '../config'
 import { getCategoryName, getCurrencyName, getProductName } from '@/firebase/firestore/lists'
 import { fNumber } from '@/utils/format-number'
 
-const Product: FC<IProduct> = ({ buying_price, category_id, currency_id, product_id, product_name, quantity, selling_price, unit_id }) => {
+const Product: FC<IProduct> = ({ category_id, currency_id, product_id, quantity, selling_price }) => {
 	const { mode } = useModeContext()
 
 	const [styles, setStyles] = useState(lightMode)

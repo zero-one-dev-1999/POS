@@ -3,7 +3,6 @@ interface IProduct {
 	category_id: string
 	currency_id: string
 	product_id: string
-	product_name: string
 	quantity: number
 	selling_price: number
 	unit_id: string
