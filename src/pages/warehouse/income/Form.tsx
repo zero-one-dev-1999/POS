@@ -29,7 +29,7 @@ import * as Yup from 'yup'
 import { warehouseIncomeActions } from '@/store/warehouse/income'
 
 import Loader from '@/components/loader'
-import { IFormValues } from './types'
+import { IFormValues } from '../../../store/warehouse/income/types'
 import GoBackButton from '@/components/button/GoBackButton'
 import { POS_WAREHOUSE_INCOME_INDEX_PAGE } from '@/helpers/pages'
 import SaveButton from '@/components/button/SaveButton'
@@ -122,7 +122,7 @@ const FormComponent: FC<FormikProps<IFormValues>> = ({ handleSubmit, values, ini
 													<FormikSelect
 														withoutHelperText
 														field={`document_items[${index}].product_id`}
-														options={lists?.productsList}
+														options={lists.productsList}
 														getAvailableOptions={options => !values.document_items?.find(f => f?.product_id === options.value)}
 														onChange={val => {
 															if (val?.currency_id) {
@@ -143,7 +143,7 @@ const FormComponent: FC<FormikProps<IFormValues>> = ({ handleSubmit, values, ini
 													<FormikInput withoutHelperText type='number' field={`document_items[${index}].selling_price`} />
 												</TableCell>
 												<TableCell>
-													<FormikSelect withoutHelperText readOnly field={`document_items[${index}].currency_id`} options={lists?.currenciesList} />
+													<FormikSelect withoutHelperText readOnly field={`document_items[${index}].currency_id`} options={lists.currenciesList} />
 												</TableCell>
 												<TableCell>
 													<IconButton disabled={values.document_items?.length === 1} type='button' color='error' onClick={() => remove(index)}>

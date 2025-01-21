@@ -1,4 +1,4 @@
-import { IFormValues } from '@/pages/warehouse/income/types'
+import { IFormValues } from '@/store/warehouse/income/types'
 import { store } from '@/store'
 import { warehouseIncomeActions } from '@/store/warehouse/income'
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, updateDoc } from 'firebase/firestore'
@@ -153,4 +153,14 @@ export const deleteIncomeDoc = async (payloadId: string) => {
 
 	await deleteDoc(doc(db, `warehouse-income`, payloadId))
 	getIncomeDocs()
+}
+
+export const viewIncomeDoc = async (id: string) => {
+	store.dispatch(warehouseIncomeActions.setDataLoading(true))
+	const response = await getDoc(doc(db, `warehouse-income`, id))
+
+	setTimeout(() => {
+		store.dispatch(warehouseIncomeActions.setView({ id: response.id, ...response.data(), date: convertTimestampToDate(response.data()?.date) }))
+		store.dispatch(warehouseIncomeActions.setDataLoading(false))
+	}, 500)
 }

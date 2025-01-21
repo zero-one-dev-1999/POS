@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, getDocs, getFirestore, updateDoc } from 'firebase/firestore'
 import { app } from '../config'
-import { IFormValues } from '@/pages/warehouse/income/types'
+import { IFormValues } from '@/store/warehouse/income/types'
 
 const db = getFirestore(app)
 

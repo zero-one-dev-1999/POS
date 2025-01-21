@@ -8,17 +8,16 @@ interface IDocItem {
 
 interface IFormValues {
 	id?: string
-	date: Date | null | undefined
+	date: Date | null | string
 	document_number: string
 	document_items: IDocItem[]
 }
 
 interface IData {
 	id: string
-	name: string
-	unit_id: string
-	currency_id: string
-	category_id: string
+	date: string
+	document_number: string
+	document_items: IDocItem[]
 }
 
 export type { IFormValues, IData }

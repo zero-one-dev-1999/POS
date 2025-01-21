@@ -3,7 +3,7 @@ import FormikInput from '@/components/input/FormikInput'
 import FormikSelect from '@/components/select/FormikSelect'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { useSelector } from '@/hooks/use-selector'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid2, IconButton, Stack } from '@mui/material'
+import { Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid2, IconButton, Stack } from '@mui/material'
 import { FieldArray, Formik, Form as FormikForm, FormikProps } from 'formik'
 import { FC, Fragment, useEffect, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -63,7 +63,7 @@ const FormComponent: FC<FormikProps<IProduct>> = ({ handleSubmit, values, initia
 			<DialogContent sx={{ py: 3 }}>
 				<Grid2 container spacing={2}>
 					<Grid2 size={12}>
-						<FormikSelect field='category_id' label={t('category')} options={lists?.categoriesList} />
+						<FormikSelect field='category_id' label={t('category')} options={lists.categoriesList} />
 					</Grid2>
 					<FieldArray name='translations'>
 						{({ push, remove }) =>
@@ -110,10 +110,10 @@ const FormComponent: FC<FormikProps<IProduct>> = ({ handleSubmit, values, initia
 						}
 					</FieldArray>
 					<Grid2 size={6}>
-						<FormikSelect field='unit_id' label={t('unit')} options={lists?.unitsList} />
+						<FormikSelect field='unit_id' label={t('unit')} options={lists.unitsList} />
 					</Grid2>
 					<Grid2 size={6}>
-						<FormikSelect field='currency_id' label={t('currency')} options={lists?.currenciesList} />
+						<FormikSelect field='currency_id' label={t('currency')} options={lists.currenciesList} />
 					</Grid2>
 				</Grid2>
 			</DialogContent>

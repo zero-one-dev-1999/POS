@@ -64,13 +64,14 @@ export const StatusColumnCell = (options: Array<{ value: number; label: string }
 	cell: ({ row }) => {
 		const { status } = row.original
 		const label = options?.find(item => item.value === status)?.label
-		const color: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' =
-			status === 0 ? 'error' : status === 1 ? 'success' : status === 2 ? 'warning' : status === 3 ? 'primary' : status === 4 ? 'error' : 'info'
-		return <Chip size='small' label={label} variant='filled' color={color} />
+		const color: 'error' | 'info' | 'success' = status === 1 ? 'error' : status === 2 ? 'success' : 'info'
+		return label ? <Chip size='small' label={label} variant='filled' color={color} /> : null
 	},
 })
 
-export const ActionColumnCell = ({ updateFunc, deleteFunc }) => ({
+type VoidFunctionWithId = (id: string) => void
+
+export const ActionColumnCell = ({ updateFunc, deleteFunc, viewFunc }: { updateFunc?: VoidFunctionWithId; deleteFunc?: VoidFunctionWithId; viewFunc?: VoidFunctionWithId }) => ({
 	header: 'actions',
 	accessorKey: '',
 	enableColumnFilter: false,
@@ -78,16 +79,27 @@ export const ActionColumnCell = ({ updateFunc, deleteFunc }) => ({
 	cell: ({ row }) => {
 		return (
 			<>
-				<Tooltip title={'edit'}>
-					<IconButton color='success' onClick={() => updateFunc(row.original.id)}>
-						<Iconify icon='eva:edit-fill' />
-					</IconButton>
-				</Tooltip>
-				<Tooltip title={'delete'}>
-					<IconButton color='error' onClick={() => deleteFunc(row.original.id)}>
-						<Iconify icon='eva:trash-2-fill' />
-					</IconButton>
-				</Tooltip>
+				{updateFunc && (
+					<Tooltip title={'edit'}>
+						<IconButton color='success' onClick={() => updateFunc(row.original.id)}>
+							<Iconify icon='eva:edit-fill' />
+						</IconButton>
+					</Tooltip>
+				)}
+				{viewFunc && (
+					<Tooltip title={'view'}>
+						<IconButton color='warning' onClick={() => viewFunc(row.original.id)}>
+							<Iconify icon='eva:eye-fill' />
+						</IconButton>
+					</Tooltip>
+				)}
+				{deleteFunc && (
+					<Tooltip title={'delete'}>
+						<IconButton color='error' onClick={() => deleteFunc(row.original.id)}>
+							<Iconify icon='eva:trash-2-fill' />
+						</IconButton>
+					</Tooltip>
+				)}
 			</>
 		)
 	},

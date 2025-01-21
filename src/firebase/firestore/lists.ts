@@ -35,7 +35,7 @@ export const getCategoryName = (id: string) => {
 		Lists: { lists },
 	} = store.getState()
 
-	if (!lists?.categoriesList) return ''
+	if (!lists.categoriesList.length) return ''
 
 	return lists.categoriesList.find((f: IOption) => f.value === id)?.label
 }
@@ -61,7 +61,7 @@ export const getUnitName = (id: string) => {
 		Lists: { lists },
 	} = store.getState()
 
-	if (!lists?.unitsList) return ''
+	if (!lists.unitsList.length) return ''
 
 	return lists.unitsList.find((f: IOption) => f.value === id)?.label
 }
@@ -87,7 +87,7 @@ export const getCurrencyName = (id: string) => {
 		Lists: { lists },
 	} = store.getState()
 
-	if (!lists?.currenciesList) return ''
+	if (!lists.currenciesList.length) return ''
 
 	return lists.currenciesList.find((f: IOption) => f.value === id)?.label
 }
@@ -115,7 +115,7 @@ export const getProductName = (id: string) => {
 		Lists: { lists },
 	} = store.getState()
 
-	if (!lists?.productsList) return ''
+	if (!lists.productsList.length) return ''
 
 	return lists.productsList.find((f: IOption) => f.value === id)?.label
 }
