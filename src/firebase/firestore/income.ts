@@ -25,39 +25,17 @@ export const getIncomeDocs = async () => {
 			),
 		)
 		store.dispatch(warehouseIncomeActions.setDataLoading(false))
-	}, 500)
+	}, 300)
 }
 
-export const createIncomeDoc = async (payload: IFormValues) => {
+export const createIncomeDoc = async (payload: IFormValues, cb: (id: string) => void) => {
 	store.dispatch(warehouseIncomeActions.setFormLoading(true))
-	await addDoc(incomeRef, payload)
-
-	const { id, products } = await getProductsInWarehouse()
-
-	const resultProducts = [...products]
-
-	payload.document_items.forEach(item => {
-		if (resultProducts.find(product => product.product_id === item.product_id)) {
-			const index = resultProducts.findIndex(product => product.product_id === item.product_id)
-			resultProducts[index].quantity = resultProducts[index].quantity + (item?.quantity ?? 0)
-			resultProducts[index].buying_price = item?.buying_price ?? resultProducts[index].buying_price
-			resultProducts[index].selling_price = item?.selling_price ?? resultProducts[index].selling_price
-		} else {
-			// @ts-ignore
-			resultProducts.push(item)
-		}
-	})
-
-	if (!id) {
-		addProductsInWarehouse(resultProducts)
-	} else {
-		updateProductsInWarehouse(id, resultProducts)
-	}
+	const response = await addDoc(incomeRef, { ...payload, status: 1 })
 
 	setTimeout(() => {
 		store.dispatch(warehouseIncomeActions.setFormLoading(false))
-		// getProductsData()
-	}, 500)
+		cb(response.id)
+	}, 300)
 }
 
 export const updateStartIncomeDoc = async (id: string) => {
@@ -70,7 +48,7 @@ export const updateStartIncomeDoc = async (id: string) => {
 				setTimeout(() => {
 					store.dispatch(warehouseIncomeActions.setFormValues({ id: docSnap.id, ...docSnap.data(), date: docSnap.data().date.toDate() }))
 					store.dispatch(warehouseIncomeActions.setFormLoading(false))
-				}, 500)
+				}, 300)
 			} else {
 				// console.log('No such document!')
 			}
@@ -80,13 +58,7 @@ export const updateStartIncomeDoc = async (id: string) => {
 		})
 }
 
-const updatedProductItems = async (id: string) => {
-	const response = await getDoc(doc(db, `warehouse-income`, id))
-	return response.data()?.document_items ?? []
-	// return response.exists()
-}
-
-export const updateIncomeDoc = async (payload: IFormValues) => {
+export const updateIncomeDoc = async (payload: IFormValues, cb: (id: string) => void) => {
 	if (!payload.id) return
 
 	store.dispatch(warehouseIncomeActions.setFormLoading(true))
@@ -99,24 +71,56 @@ export const updateIncomeDoc = async (payload: IFormValues) => {
 
 	setTimeout(() => {
 		store.dispatch(warehouseIncomeActions.setFormLoading(false))
-	}, 500)
+		cb(payloadId)
+	}, 300)
+	// warehouse-income part end
+}
+
+type ICallbackOrNull = () => void | undefined
+
+export const deleteIncomeDoc = async (payloadId: string, cb?: ICallbackOrNull) => {
+	store.dispatch(warehouseIncomeActions.setDataLoading(true))
+	await deleteDoc(doc(db, `warehouse-income`, payloadId))
+	if (cb) {
+		cb()
+	} else {
+		getIncomeDocs()
+	}
+}
+
+export const viewIncomeDoc = async (id: string) => {
+	store.dispatch(warehouseIncomeActions.setDataLoading(true))
+	const response = await getDoc(doc(db, `warehouse-income`, id))
+	store.dispatch(warehouseIncomeActions.setView({ id: response.id, ...response.data(), date: convertTimestampToDate(response.data()?.date) }))
+	store.dispatch(warehouseIncomeActions.setDataLoading(false))
+}
+
+export const saveAndFinishIncomeDoc = async (id: string) => {
+	store.dispatch(warehouseIncomeActions.setDataLoading(true))
+
+	const response = await getDoc(doc(db, `warehouse-income`, id))
+	const data = response.data() ?? {}
+
+	// warehouse-income part start
+
+	setTimeout(() => {
+		store.dispatch(warehouseIncomeActions.setStatus(2))
+		store.dispatch(warehouseIncomeActions.setDataLoading(false))
+	}, 300)
+
+	await updateDoc(doc(db, `warehouse-income`, id), {
+		...data,
+		status: 2,
+	})
+
 	// warehouse-income part end
 
 	// warehouse part start
-	const { id, products } = await getProductsInWarehouse()
+	const { id: docId, products } = await getProductsInWarehouse()
 
-	const resultProducts = [...products]
+	const resultProducts = products?.length ? [...products] : []
 
-	const oldProducts = await updatedProductItems(payload.id)
-
-	if (oldProducts.length) {
-		oldProducts.forEach(item => {
-			const index = resultProducts.findIndex(product => product.product_id === item.product_id)
-			resultProducts[index].quantity = resultProducts[index].quantity - (item?.quantity ?? 0)
-		})
-	}
-	const newProducts = payload.document_items
-	newProducts.forEach(item => {
+	data.document_items.forEach(item => {
 		if (resultProducts.find(product => product.product_id === item.product_id)) {
 			const index = resultProducts.findIndex(product => product.product_id === item.product_id)
 			resultProducts[index].quantity = resultProducts[index].quantity + (item?.quantity ?? 0)
@@ -128,39 +132,10 @@ export const updateIncomeDoc = async (payload: IFormValues) => {
 		}
 	})
 
-	updateProductsInWarehouse(id as string, resultProducts)
-
-	// warehouse part end
-}
-
-export const deleteIncomeDoc = async (payloadId: string) => {
-	store.dispatch(warehouseIncomeActions.setDataLoading(true))
-
-	const { id, products } = await getProductsInWarehouse()
-
-	const resultProducts = [...products]
-
-	const oldProducts = await updatedProductItems(payloadId)
-
-	if (oldProducts.length) {
-		oldProducts.forEach(item => {
-			const index = resultProducts.findIndex(product => product.product_id === item.product_id)
-			resultProducts[index].quantity = resultProducts[index].quantity - (item?.quantity ?? 0)
-		})
+	if (!docId) {
+		addProductsInWarehouse(resultProducts)
+	} else {
+		updateProductsInWarehouse(docId, resultProducts)
 	}
-
-	updateProductsInWarehouse(id as string, resultProducts)
-
-	await deleteDoc(doc(db, `warehouse-income`, payloadId))
-	getIncomeDocs()
-}
-
-export const viewIncomeDoc = async (id: string) => {
-	store.dispatch(warehouseIncomeActions.setDataLoading(true))
-	const response = await getDoc(doc(db, `warehouse-income`, id))
-
-	setTimeout(() => {
-		store.dispatch(warehouseIncomeActions.setView({ id: response.id, ...response.data(), date: convertTimestampToDate(response.data()?.date) }))
-		store.dispatch(warehouseIncomeActions.setDataLoading(false))
-	}, 500)
+	// warehouse part end
 }

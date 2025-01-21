@@ -25,7 +25,7 @@ export const getReferenceMainData = async (controller: string) => {
 			),
 		)
 		store.dispatch(referenceMainActions.setDataLoading(false))
-	}, 500)
+	}, 300)
 }
 
 export const createReferenceMainDoc = async (controller: string, payload: any) => {

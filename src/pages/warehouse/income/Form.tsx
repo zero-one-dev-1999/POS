@@ -31,12 +31,13 @@ import { warehouseIncomeActions } from '@/store/warehouse/income'
 import Loader from '@/components/loader'
 import { IFormValues } from '../../../store/warehouse/income/types'
 import GoBackButton from '@/components/button/GoBackButton'
-import { POS_WAREHOUSE_INCOME_INDEX_PAGE } from '@/helpers/pages'
+import { POS_WAREHOUSE_INCOME_INDEX_PAGE, POS_WAREHOUSE_INCOME_VIEW_PAGE } from '@/helpers/pages'
 import SaveButton from '@/components/button/SaveButton'
 import FormikDatePicker from '@/components/datepicker'
 import { createIncomeDoc, updateIncomeDoc } from '@/firebase/firestore/income'
 
 import { v4 as uuidv4 } from 'uuid'
+import { generatePath, useNavigate } from 'react-router'
 
 function generateNumericUUID(length = 6) {
 	const uuid = uuidv4().replace(/\D/g, '') // Remove non-numeric characters
@@ -170,6 +171,7 @@ const FormComponent: FC<FormikProps<IFormValues>> = ({ handleSubmit, values, ini
 
 const Form: FC = () => {
 	const [t] = useTranslation()
+	const navigate = useNavigate()
 
 	const { isUpdate } = useSelector(({ WarehouseIncome: s }) => ({
 		isUpdate: s.form.isUpdate,
@@ -207,11 +209,12 @@ const Form: FC = () => {
 					),
 				})}
 				onSubmit={values => {
-					if (isUpdate) {
-						updateIncomeDoc(values)
-					} else {
-						createIncomeDoc(values)
-					}
+					;(isUpdate ? updateIncomeDoc : createIncomeDoc)(values, id => navigate(generatePath(POS_WAREHOUSE_INCOME_VIEW_PAGE, { id })))
+					// if (isUpdate) {
+					// 	updateIncomeDoc(values)
+					// } else {
+					// 	createIncomeDoc(values, id => navigate(generatePath(POS_WAREHOUSE_INCOME_VIEW_PAGE, { id })))
+					// }
 				}}
 			/>
 		</Card>

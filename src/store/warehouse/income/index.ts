@@ -56,6 +56,10 @@ const { actions, reducer } = createSlice({
 		setView(state, { payload }) {
 			state.view = payload
 		},
+		setStatus(state, { payload }) {
+			if (!state.view) return
+			state.view = { ...state.view, status: payload }
+		},
 		resetForm(state) {
 			state.form.isUpdate = false
 			state.form.values = null

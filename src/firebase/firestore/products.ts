@@ -31,7 +31,7 @@ export const getProductsData = async () => {
 			),
 		)
 		store.dispatch(productsActions.setDataLoading(false))
-	}, 500)
+	}, 300)
 }
 
 export const createProductDoc = async (payload: IProduct) => {
@@ -42,7 +42,7 @@ export const createProductDoc = async (payload: IProduct) => {
 		store.dispatch(productsActions.setFormLoading(false))
 		store.dispatch(productsActions.setFormIsOpen(false))
 		getProductsData()
-	}, 500)
+	}, 300)
 }
 
 export const updateStartProductDoc = async (id: string) => {
@@ -56,7 +56,7 @@ export const updateStartProductDoc = async (id: string) => {
 				setTimeout(() => {
 					store.dispatch(productsActions.setFormValues({ id: docSnap.id, ...docSnap.data() }))
 					store.dispatch(productsActions.setFormLoading(false))
-				}, 500)
+				}, 300)
 			} else {
 				// console.log('No such document!')
 			}
@@ -79,7 +79,7 @@ export const updateProductDoc = async (payload: IProduct) => {
 		store.dispatch(productsActions.setFormLoading(false))
 		store.dispatch(productsActions.setFormIsOpen(false))
 		getProductsData()
-	}, 500)
+	}, 300)
 }
 
 export const deleteProductDoc = async (id: string) => {

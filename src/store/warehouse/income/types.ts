@@ -11,6 +11,7 @@ interface IFormValues {
 	date: Date | null | string
 	document_number: string
 	document_items: IDocItem[]
+	status?: 1 | 2
 }
 
 interface IData {

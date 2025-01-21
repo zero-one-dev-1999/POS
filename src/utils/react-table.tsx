@@ -79,13 +79,6 @@ export const ActionColumnCell = ({ updateFunc, deleteFunc, viewFunc }: { updateF
 	cell: ({ row }) => {
 		return (
 			<>
-				{updateFunc && (
-					<Tooltip title={'edit'}>
-						<IconButton color='success' onClick={() => updateFunc(row.original.id)}>
-							<Iconify icon='eva:edit-fill' />
-						</IconButton>
-					</Tooltip>
-				)}
 				{viewFunc && (
 					<Tooltip title={'view'}>
 						<IconButton color='warning' onClick={() => viewFunc(row.original.id)}>
@@ -93,7 +86,15 @@ export const ActionColumnCell = ({ updateFunc, deleteFunc, viewFunc }: { updateF
 						</IconButton>
 					</Tooltip>
 				)}
-				{deleteFunc && (
+				{updateFunc && row.original.status === 1 && (
+					<Tooltip title={'edit'}>
+						<IconButton color='success' onClick={() => updateFunc(row.original.id)}>
+							<Iconify icon='eva:edit-fill' />
+						</IconButton>
+					</Tooltip>
+				)}
+
+				{deleteFunc && row.original.status === 1 && (
 					<Tooltip title={'delete'}>
 						<IconButton color='error' onClick={() => deleteFunc(row.original.id)}>
 							<Iconify icon='eva:trash-2-fill' />
