@@ -16,7 +16,7 @@ interface IOption {
 	label: string
 }
 export const getCategoriesList = async () => {
-	const user_id = store.getState().App.user?.id
+	const user_id = store.getState().App.user?.uid
 	const language = localStorage.getItem('i18nextLng')
 	const response = await getDocs(query(collection(db, 'reference-main-category'), where('user_id', '==', user_id)))
 
@@ -43,7 +43,7 @@ export const getCategoryName = (id: string) => {
 }
 
 export const getUnitsList = async () => {
-	const user_id = store.getState().App.user?.id
+	const user_id = store.getState().App.user?.uid
 	const language = localStorage.getItem('i18nextLng')
 	const response = await getDocs(query(collection(db, 'reference-main-unit'), where('user_id', '==', user_id)))
 
@@ -70,7 +70,7 @@ export const getUnitName = (id: string) => {
 }
 
 export const getCurrenciesList = async () => {
-	const user_id = store.getState().App.user?.id
+	const user_id = store.getState().App.user?.uid
 	const language = localStorage.getItem('i18nextLng')
 	const response = await getDocs(query(collection(db, 'reference-main-currency'), where('user_id', '==', user_id)))
 
@@ -97,7 +97,7 @@ export const getCurrencyName = (id: string) => {
 }
 
 export const getProductsList = async () => {
-	const user_id = store.getState().App.user?.id
+	const user_id = store.getState().App.user?.uid
 	const language = localStorage.getItem('i18nextLng')
 	const response = await getDocs(query(collection(db, 'products'), where('user_id', '==', user_id)))
 
@@ -127,7 +127,7 @@ export const getProductName = (id: string) => {
 }
 
 export const getProductsInWarehouseList = async () => {
-	const user_id = store.getState().App.user?.id
+	const user_id = store.getState().App.user?.uid
 	const response = await getDocs(collection(db, 'warehouse'))
 
 	const products = response.docs.map(doc => doc.data())?.length ? response.docs.map(doc => doc.data())[0].products.filter((f: any) => f.user_id === user_id) : []

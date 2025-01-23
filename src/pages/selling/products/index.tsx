@@ -3,10 +3,11 @@ import { getProducts } from '@/firebase/firestore/selling'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { useSelector } from '@/hooks/use-selector'
 import { sellingActions } from '@/store/selling'
-import { Button, Card, FormControl, Grid2, IconButton, InputAdornment, Skeleton, Stack, TextField, Typography } from '@mui/material'
+import { Button, Card, FormControl, Grid, Grid2, IconButton, InputAdornment, Skeleton, Stack, TextField, Typography } from '@mui/material'
 import { FC, useLayoutEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Product from './Product'
+import LazyImage from '@/components/image'
 
 const Products: FC = () => {
 	const [t] = useTranslation()
@@ -61,7 +62,23 @@ const Products: FC = () => {
 							</Grid2>
 						))
 					) : (
-						<Typography variant='h5'>{t('no_data')}</Typography>
+						<Grid2 size={12} sx={{ height: '100%' }}>
+							<Stack
+								alignItems='center'
+								justifyContent='center'
+								sx={{
+									height: 'calc(100% - 50px)',
+									border: '1px solid red',
+									textAlign: 'center',
+									p: theme => theme.spacing(8, 2),
+								}}
+							>
+								<LazyImage src={'/illustration_empty_content.svg'} alt='no data' height='200' />
+								<Typography variant='h5' mt={2} gutterBottom>
+									{t('no-data')}
+								</Typography>
+							</Stack>
+						</Grid2>
 					)}
 				</Grid2>
 			</Stack>

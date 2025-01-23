@@ -52,5 +52,17 @@
 	"selling-price": "Selling price",
 	"document-number": "Document number",
 	"save-and-finish": "Save and finish",
-	"clear": "Clear"
+	"clear": "Clear",
+	"email": "Email",
+	"sign-in-with-google": "Sign in with Google",
+	"successfully-registered": "Successfully registered",
+	"successfully-logged-in": "Successfully logged in",
+	"successfully-logged-out": "Successfully logged out",
+	"invalid-password-or-email": "Invalid password or email",
+	"something-went-wrong": "Something went wrong",
+	"successfully-updated": "Successfully updated",
+	"successfully-deleted": "Successfully deleted",
+	"successfully-created": "Successfully created",
+	"successfully-saved": "Successfully saved",
+	"the-product-in-the-entered-quantity-is-not-available": "The product in the entered quantity is not available"
 }

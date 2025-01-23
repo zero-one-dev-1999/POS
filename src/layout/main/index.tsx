@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import Header from './Header'
-import { Divider, Stack } from '@mui/material'
+import { Box, Divider, Stack, Typography } from '@mui/material'
 import { Outlet, useLocation } from 'react-router'
 
 const DashboardLayout: FC = () => {
@@ -14,16 +14,18 @@ const DashboardLayout: FC = () => {
 
 			<Divider sx={{ borderStyle: 'dashed' }} />
 			<Divider sx={{ borderStyle: 'dashed' }} />
-			<Stack
+			<Box
 				sx={{
 					px: !location.pathname.includes('/selling') ? { sm: 2, lg: 4 } : 0,
-					py: !location.pathname.includes('/selling') ? 4 : 0,
-					height: 'calc(100vh - 82px)',
+					pb: !location.pathname.includes('/selling') ? 4 : 0,
+					mt: !location.pathname.includes('/selling') ? '24px' : 0,
+					height: !location.pathname.includes('/selling') ? 'calc(100vh - 106px)' : 'calc(100vh - 82px)',
 					overflowY: 'auto',
+					scrollbarWidth: 'thin',
 				}}
 			>
 				<Outlet />
-			</Stack>
+			</Box>
 		</>
 	)
 }

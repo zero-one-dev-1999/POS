@@ -5,139 +5,173 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, quer
 import { app } from '../config'
 import { addProductsInWarehouse, getProductsInWarehouse, updateProductsInWarehouse } from './warehouse'
 import { convertTimestampToDate } from '@/utils/date'
+import { toastErrorMessage, toastSuccessMessage } from '@/utils/toast'
+import { t } from 'i18next'
 
 const db = getFirestore(app)
 
 const incomeRef = collection(db, 'warehouse-income')
 
 export const getIncomeDocs = async () => {
-	const user_id = store.getState().App.user?.id
-	store.dispatch(warehouseIncomeActions.setDataLoading(true))
-	const response = await getDocs(query(incomeRef, where('user_id', '==', user_id)))
+	try {
+		const user_id = store.getState().App.user?.uid
+		store.dispatch(warehouseIncomeActions.setDataLoading(true))
+		const response = await getDocs(query(incomeRef, where('user_id', '==', user_id)))
 
-	setTimeout(() => {
-		store.dispatch(
-			warehouseIncomeActions.setData(
-				response.docs.map(doc => ({
-					id: doc.id,
-					...doc.data(),
-					date: convertTimestampToDate(doc.data().date),
-				})),
-			),
-		)
-		store.dispatch(warehouseIncomeActions.setDataLoading(false))
-	}, 300)
+		setTimeout(() => {
+			store.dispatch(
+				warehouseIncomeActions.setData(
+					response.docs.map(doc => ({
+						id: doc.id,
+						...doc.data(),
+						date: convertTimestampToDate(doc.data().date),
+					})),
+				),
+			)
+			store.dispatch(warehouseIncomeActions.setDataLoading(false))
+		}, 300)
+	} catch (error) {
+		toastErrorMessage(t('something-went-wrong'))
+	}
 }
 
 export const createIncomeDoc = async (payload: IFormValues, cb: (id: string) => void) => {
-	const user_id = store.getState().App.user?.id
-	store.dispatch(warehouseIncomeActions.setFormLoading(true))
-	const response = await addDoc(incomeRef, { ...payload, status: 1, user_id })
+	try {
+		const user_id = store.getState().App.user?.uid
+		store.dispatch(warehouseIncomeActions.setFormLoading(true))
+		const response = await addDoc(incomeRef, { ...payload, status: 1, user_id })
 
-	setTimeout(() => {
-		store.dispatch(warehouseIncomeActions.setFormLoading(false))
-		cb(response.id)
-	}, 300)
+		setTimeout(() => {
+			toastSuccessMessage(t('successfully-created'))
+			store.dispatch(warehouseIncomeActions.setFormLoading(false))
+			cb(response.id)
+		}, 300)
+	} catch (error) {
+		toastErrorMessage(t('something-went-wrong'))
+	}
 }
 
 export const updateStartIncomeDoc = async (id: string) => {
-	store.dispatch(warehouseIncomeActions.setFormLoading(true))
-	store.dispatch(warehouseIncomeActions.setFormIsUpdate(true))
+	try {
+		store.dispatch(warehouseIncomeActions.setFormLoading(true))
+		store.dispatch(warehouseIncomeActions.setFormIsUpdate(true))
 
-	getDoc(doc(db, `warehouse-income`, id))
-		.then(docSnap => {
-			if (docSnap.exists()) {
-				setTimeout(() => {
-					store.dispatch(warehouseIncomeActions.setFormValues({ id: docSnap.id, ...docSnap.data(), date: docSnap.data().date.toDate() }))
-					store.dispatch(warehouseIncomeActions.setFormLoading(false))
-				}, 300)
-			} else {
-				// console.log('No such document!')
-			}
-		})
-		.catch(error => {
-			console.error('Error getting document:', error)
-		})
+		getDoc(doc(db, `warehouse-income`, id))
+			.then(docSnap => {
+				if (docSnap.exists()) {
+					setTimeout(() => {
+						store.dispatch(warehouseIncomeActions.setFormValues({ id: docSnap.id, ...docSnap.data(), date: docSnap.data().date.toDate() }))
+						store.dispatch(warehouseIncomeActions.setFormLoading(false))
+					}, 300)
+				} else {
+					toastErrorMessage(t('something-went-wrong'))
+				}
+			})
+			.catch(error => {
+				console.error('Error getting document:', error)
+			})
+	} catch (error) {
+		toastErrorMessage(t('something-went-wrong'))
+	}
 }
 
 export const updateIncomeDoc = async (payload: IFormValues, cb: (id: string) => void) => {
-	if (!payload.id) return
+	try {
+		if (!payload.id) return
 
-	store.dispatch(warehouseIncomeActions.setFormLoading(true))
+		store.dispatch(warehouseIncomeActions.setFormLoading(true))
 
-	// warehouse-income part start
-	const payloadId = payload.id
-	const data = { ...payload }
-	delete data.id
-	await updateDoc(doc(db, `warehouse-income`, payloadId), data)
+		// warehouse-income part start
+		const payloadId = payload.id
+		const data = { ...payload }
+		delete data.id
+		await updateDoc(doc(db, `warehouse-income`, payloadId), data)
 
-	setTimeout(() => {
-		store.dispatch(warehouseIncomeActions.setFormLoading(false))
-		cb(payloadId)
-	}, 300)
-	// warehouse-income part end
+		setTimeout(() => {
+			toastSuccessMessage(t('successfully-updated'))
+			store.dispatch(warehouseIncomeActions.setFormLoading(false))
+			cb(payloadId)
+		}, 300)
+		// warehouse-income part end
+	} catch (error) {
+		toastErrorMessage(t('something-went-wrong'))
+	}
 }
 
 type ICallbackOrNull = () => void | undefined
 
 export const deleteIncomeDoc = async (payloadId: string, cb?: ICallbackOrNull) => {
-	store.dispatch(warehouseIncomeActions.setDataLoading(true))
-	await deleteDoc(doc(db, `warehouse-income`, payloadId))
-	if (cb) {
-		cb()
-	} else {
-		getIncomeDocs()
+	try {
+		store.dispatch(warehouseIncomeActions.setDataLoading(true))
+		await deleteDoc(doc(db, `warehouse-income`, payloadId))
+		toastSuccessMessage(t('successfully-deleted'))
+		if (cb) {
+			cb()
+		} else {
+			getIncomeDocs()
+		}
+	} catch (error) {
+		toastErrorMessage(t('something-went-wrong'))
 	}
 }
 
 export const viewIncomeDoc = async (id: string) => {
-	store.dispatch(warehouseIncomeActions.setDataLoading(true))
-	const response = await getDoc(doc(db, `warehouse-income`, id))
-	store.dispatch(warehouseIncomeActions.setView({ id: response.id, ...response.data(), date: convertTimestampToDate(response.data()?.date) }))
-	store.dispatch(warehouseIncomeActions.setDataLoading(false))
+	try {
+		store.dispatch(warehouseIncomeActions.setDataLoading(true))
+		const response = await getDoc(doc(db, `warehouse-income`, id))
+		store.dispatch(warehouseIncomeActions.setView({ id: response.id, ...response.data(), date: convertTimestampToDate(response.data()?.date) }))
+		store.dispatch(warehouseIncomeActions.setDataLoading(false))
+	} catch (error) {
+		toastErrorMessage(t('something-went-wrong'))
+	}
 }
 
 export const saveAndFinishIncomeDoc = async (id: string) => {
-	store.dispatch(warehouseIncomeActions.setDataLoading(true))
+	try {
+		store.dispatch(warehouseIncomeActions.setDataLoading(true))
 
-	const response = await getDoc(doc(db, `warehouse-income`, id))
-	const data = response.data() ?? {}
+		const response = await getDoc(doc(db, `warehouse-income`, id))
+		const data = response.data() ?? {}
 
-	// warehouse-income part start
+		// warehouse-income part start
 
-	setTimeout(() => {
-		store.dispatch(warehouseIncomeActions.setStatus(2))
-		store.dispatch(warehouseIncomeActions.setDataLoading(false))
-	}, 300)
+		setTimeout(() => {
+			toastSuccessMessage(t('successfully-saved'))
+			store.dispatch(warehouseIncomeActions.setStatus(2))
+			store.dispatch(warehouseIncomeActions.setDataLoading(false))
+		}, 300)
 
-	await updateDoc(doc(db, `warehouse-income`, id), {
-		...data,
-		status: 2,
-	})
+		await updateDoc(doc(db, `warehouse-income`, id), {
+			...data,
+			status: 2,
+		})
 
-	// warehouse-income part end
+		// warehouse-income part end
 
-	// warehouse part start
-	const user_id = store.getState().App.user?.id
-	const { id: docId, products } = await getProductsInWarehouse()
+		// warehouse part start
+		const user_id = store.getState().App.user?.uid
+		const { id: docId, products } = await getProductsInWarehouse()
 
-	const resultProducts = products?.length ? [...products] : []
+		const resultProducts = products?.length ? [...products] : []
 
-	data.document_items.forEach(item => {
-		if (resultProducts.find(product => product.product_id === item.product_id && product.user_id === user_id)) {
-			const index = resultProducts.findIndex(product => product.product_id === item.product_id && product.user_id === user_id)
-			resultProducts[index].quantity = resultProducts[index].quantity + (item?.quantity ?? 0)
-			resultProducts[index].buying_price = item?.buying_price ?? resultProducts[index].buying_price
-			resultProducts[index].selling_price = item?.selling_price ?? resultProducts[index].selling_price
+		data.document_items.forEach(item => {
+			if (resultProducts.find(product => product.product_id === item.product_id && product.user_id === user_id)) {
+				const index = resultProducts.findIndex(product => product.product_id === item.product_id && product.user_id === user_id)
+				resultProducts[index].quantity = resultProducts[index].quantity + (item?.quantity ?? 0)
+				resultProducts[index].buying_price = item?.buying_price ?? resultProducts[index].buying_price
+				resultProducts[index].selling_price = item?.selling_price ?? resultProducts[index].selling_price
+			} else {
+				resultProducts.push({ ...item, user_id })
+			}
+		})
+
+		if (!docId) {
+			addProductsInWarehouse(resultProducts)
 		} else {
-			resultProducts.push({ ...item, user_id })
+			updateProductsInWarehouse(docId, resultProducts)
 		}
-	})
-
-	if (!docId) {
-		addProductsInWarehouse(resultProducts)
-	} else {
-		updateProductsInWarehouse(docId, resultProducts)
+		// warehouse part end
+	} catch (error) {
+		toastErrorMessage(t('something-went-wrong'))
 	}
-	// warehouse part end
 }

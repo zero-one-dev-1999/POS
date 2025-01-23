@@ -52,5 +52,17 @@
 	"selling-price": "Цена продажи",
 	"document-number": "Номер документа",
 	"save-and-finish": "Сохранить и завершить",
-	"clear": "Очистить"
+	"clear": "Очистить",
+	"email": "Email",
+	"sign-in-with-google": "Войти с Google",
+	"successfully-registered": "Вы успешно зарегистрировались",
+	"successfully-logged-in": "Вы успешно вошли",
+	"successfully-logged-out": "Вы успешно вышли",
+	"invalid-password-or-email": "Неверный пароль или email",
+	"something-went-wrong": "Что-то пошло не так",
+	"successfully-updated": "Вы успешно обновились",
+	"successfully-deleted": "Вы успешно удалили",
+	"successfully-created": "Вы успешно создали",
+	"successfully-saved": "Вы успешно сохранили",
+	"the-product-in-the-entered-quantity-is-not-available": "Продукт в введенном количестве не доступен"
 }

@@ -52,5 +52,17 @@
 	"buying-price": "Sotib olish narxi",
 	"document-number": "Hujjat raqami",
 	"save-and-finish": "Saqlash va tugatish",
-	"clear": "Tozalash"
+	"clear": "Tozalash",
+	"email": "Email",
+	"sign-in-with-google": "Google orqali kirish",
+	"successfully-registered": "Muvaffaqiyatli ro'yxatdan o'tildingiz",
+	"successfully-logged-in": "Muvaffaqiyatli kirdingiz",
+	"successfully-logged-out": "Muvaffaqiyatli chiqdingiz",
+	"invalid-password-or-email": "Noto'g'ri parol yoki email",
+	"something-went-wrong": "Nimadir noto'g'ri bo'ldi",
+	"successfully-updated": "Muvaffaqiyatli yangilandi",
+	"successfully-deleted": "Muvaffaqiyatli o'chirildi",
+	"successfully-created": "Muvaffaqiyatli yaratildi",
+	"successfully-saved": "Muvaffaqiyatli saqlandi",
+	"the-product-in-the-entered-quantity-is-not-available": "Kirilgan miqdorda mahsulot mavjud emas"
 }

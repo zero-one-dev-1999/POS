@@ -2,16 +2,13 @@ import { useSelector } from '@/hooks/use-selector'
 import { Avatar, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
 import { FC, MouseEvent, useState } from 'react'
 import Iconify from '@/components/iconify'
-import { useDispatch } from '@/hooks/use-dispatch'
-import { appActions } from '@/store/app'
 import { useTranslation } from 'react-i18next'
+import { logoutUser } from '@/firebase/firestore/auth'
 
 const Profile: FC = () => {
 	const [t] = useTranslation()
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 	const open = Boolean(anchorEl)
-
-	const dispatch = useDispatch()
 
 	const user = useSelector(s => s.App.user)
 
@@ -23,7 +20,7 @@ const Profile: FC = () => {
 	}
 
 	const logout = () => {
-		dispatch(appActions.reset())
+		logoutUser()
 		handleClose()
 	}
 
@@ -31,7 +28,7 @@ const Profile: FC = () => {
 		<>
 			<Tooltip title={t('profile')}>
 				<IconButton onClick={handleClick} size='small' aria-controls={open ? 'profile' : undefined} aria-haspopup='true' aria-expanded={open ? 'true' : undefined}>
-					<Avatar sx={{ width: 40, height: 40 }}>{String(user?.username?.[0]).toUpperCase()}</Avatar>
+					<Avatar sx={{ width: 40, height: 40 }}>{String(user?.email?.[0]).toUpperCase()}</Avatar>
 				</IconButton>
 			</Tooltip>
 			<Menu
@@ -81,7 +78,7 @@ const Profile: FC = () => {
 						},
 					}}
 				>
-					<Typography variant='body2'>{user?.username}</Typography>
+					<Typography variant='body2'>{user?.email}</Typography>
 				</MenuItem>
 
 				<MenuItem

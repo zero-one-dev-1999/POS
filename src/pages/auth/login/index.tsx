@@ -3,11 +3,11 @@ import { FC, useState } from 'react'
 import { Formik, Form, useFormikContext } from 'formik'
 import * as Yup from 'yup'
 import Iconify from '@/components/iconify'
-import { loginUser } from '@/firebase/firestore/users'
 import { Link } from 'react-router'
 import { POS_REGISTER_PAGE } from '@/helpers/pages'
 import { useTranslation } from 'react-i18next'
 import FormikInput from '@/components/input/FormikInput'
+import { loginUser, loginWithGoogle } from '@/firebase/firestore/auth'
 
 const FormComponent: FC = () => {
 	const [showPassword, setShowPassword] = useState(false)
@@ -34,7 +34,7 @@ const FormComponent: FC = () => {
 					</Typography>
 					<Grid2 container spacing={2}>
 						<Grid2 size={12}>
-							<FormikInput field='username' size='medium' label={t('username')} />
+							<FormikInput field='email' size='medium' label={t('email')} />
 						</Grid2>
 						<Grid2 size={12}>
 							<FormikInput
@@ -61,6 +61,10 @@ const FormComponent: FC = () => {
 						{t('or')}
 					</Divider>
 
+					<Button type='button' color='success' variant='contained' sx={{ width: '100%', mt: 3 }} size='large' onClick={loginWithGoogle}>
+						{t('sign-in-with-google')}
+					</Button>
+
 					<Link to={POS_REGISTER_PAGE} style={{ margin: '24px 0' }}>
 						<Button type='button' variant='contained' sx={{ width: '100%' }} size='large'>
 							{t('sign-up')}
@@ -76,10 +80,10 @@ const LoginPage: FC = () => {
 	return (
 		<Formik
 			component={FormComponent}
-			onSubmit={(values: { username: string; password: string }) => loginUser(values)}
-			initialValues={{ username: '', password: '' }}
+			onSubmit={(values: { email: string; password: string }) => loginUser(values)}
+			initialValues={{ email: '', password: '' }}
 			validationSchema={Yup.object({
-				username: Yup.string().required(),
+				email: Yup.string().email().required(),
 				password: Yup.string().required(),
 			})}
 		/>

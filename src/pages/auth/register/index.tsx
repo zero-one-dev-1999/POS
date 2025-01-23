@@ -5,9 +5,9 @@ import Iconify from '@/components/iconify'
 import { POS_LOGIN_PAGE } from '@/helpers/pages'
 import { Link } from 'react-router'
 import * as Yup from 'yup'
-import { registerUser } from '@/firebase/firestore/users'
 import FormikInput from '@/components/input/FormikInput'
 import { useTranslation } from 'react-i18next'
+import { registerUser } from '@/firebase/firestore/auth'
 
 const FormComponent: FC = () => {
 	const [showPassword, setShowPassword] = useState(false)
@@ -34,30 +34,13 @@ const FormComponent: FC = () => {
 					</Typography>
 					<Grid2 container spacing={2}>
 						<Grid2 size={12}>
-							<FormikInput field='username' size='medium' label={t('username')} />
+							<FormikInput field='email' size='medium' label={t('email')} />
 						</Grid2>
 						<Grid2 size={12}>
 							<FormikInput
 								field='password'
 								size='medium'
 								label={t('password')}
-								type={showPassword ? 'text' : 'password'}
-								InputProps={{
-									endAdornment: (
-										<InputAdornment position='end'>
-											<IconButton edge='end' onClick={() => setShowPassword(!showPassword)}>
-												<Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-											</IconButton>
-										</InputAdornment>
-									),
-								}}
-							/>
-						</Grid2>
-						<Grid2 size={12}>
-							<FormikInput
-								field='confirm_password'
-								size='medium'
-								label={t('confirm-password')}
 								type={showPassword ? 'text' : 'password'}
 								InputProps={{
 									endAdornment: (
@@ -89,21 +72,18 @@ const FormComponent: FC = () => {
 	)
 }
 
-const LoginPage: FC = () => {
+const RegisterPage: FC = () => {
 	return (
 		<Formik
 			component={FormComponent}
-			onSubmit={(values: { username: string; password: string; confirm_password: string }) => registerUser({ username: values.username, password: values.password })}
-			initialValues={{ username: '', password: '', confirm_password: '' }}
+			onSubmit={(values: { email: string; password: string }) => registerUser(values)}
+			initialValues={{ email: '', password: '' }}
 			validationSchema={Yup.object({
-				username: Yup.string().required(),
+				email: Yup.string().email().required(),
 				password: Yup.string().required(),
-				confirm_password: Yup.string().when('password', (password, schema, field) =>
-					password && field.value ? schema.oneOf([Yup.ref('password')]).required('Not matched') : schema,
-				),
 			})}
 		/>
 	)
 }
 
-export default LoginPage
+export default RegisterPage

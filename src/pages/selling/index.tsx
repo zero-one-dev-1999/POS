@@ -7,8 +7,6 @@ import Details from './details'
 import { getCategoriesList, getCurrenciesList, getProductsList, getUnitsList } from '@/firebase/firestore/lists'
 
 const Selling: FC = () => {
-	const [t] = useTranslation()
-
 	useLayoutEffect(() => {
 		getCategoriesList()
 		getProductsList()

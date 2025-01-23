@@ -9,7 +9,7 @@ const db = getFirestore(app)
 export const getCategories = async () => {
 	store.dispatch(sellingActions.setCategoriesLoading(true))
 
-	const user_id = store.getState().App.user?.id
+	const user_id = store.getState().App.user?.uid
 	const language = localStorage.getItem('i18nextLng')
 	const response = await getDocs(query(collection(db, 'reference-main-category'), where('user_id', '==', user_id)))
 
@@ -32,7 +32,7 @@ export const getCategories = async () => {
 export const getProducts = async () => {
 	store.dispatch(sellingActions.setProductsLoading(true))
 
-	const user_id = store.getState().App.user?.id
+	const user_id = store.getState().App.user?.uid
 	const response = await getDocs(collection(db, 'warehouse'))
 
 	store.dispatch(

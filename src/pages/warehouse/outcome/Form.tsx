@@ -20,6 +20,7 @@ import { createOutcomeDoc, updateOutcomeDoc } from '@/firebase/firestore/outcome
 import { v4 as uuidv4 } from 'uuid'
 import { generatePath, useNavigate } from 'react-router'
 import { IOutcomeFormValues } from '@/store/warehouse/outcome/types'
+import { toastErrorMessage } from '@/utils/toast'
 
 function generateNumericUUID(length = 6) {
 	const uuid = uuidv4().replace(/\D/g, '')
@@ -124,7 +125,7 @@ const FormComponent: FC<FormikProps<IOutcomeFormValues>> = ({ handleSubmit, valu
 															const remain = lists.productsInWarehouseList?.find(f => f?.value === item.product_id)?.remain
 															if (Number(e.target.value) > remain) {
 																setFieldValue(`document_items[${index}].quantity`, remain)
-																alert(t('not-enough-quantity'))
+																toastErrorMessage(t('the-product-in-the-entered-quantity-is-not-available'))
 															} else {
 																setFieldValue(`document_items[${index}].quantity`, e.target.value)
 															}
