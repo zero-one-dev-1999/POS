@@ -7,6 +7,7 @@ interface IProduct {
 	selling_price: number
 	unit_id: string
 	user_id: string
+	count: number
 }
 
 interface IState {
@@ -21,4 +22,10 @@ interface IState {
 	}
 }
 
-export type { IState, IProduct }
+interface IBasketState {
+	page: number
+	products: Array<Array<IProduct>>
+	loading: boolean
+}
+
+export type { IState, IProduct, IBasketState }

@@ -1,11 +1,11 @@
 import { useSelector } from '@/hooks/use-selector'
 import { Button, Card, Skeleton, Typography } from '@mui/material'
-import { FC, useLayoutEffect } from 'react'
+import { FC, useEffect, useLayoutEffect } from 'react'
 import { colors } from '../config'
 import Iconify from '@/components/iconify'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { sellingActions } from '@/store/selling'
-import { getCategories } from '@/firebase/firestore/selling'
+import { getCategories, getProducts } from '@/firebase/firestore/selling'
 import { useTranslation } from 'react-i18next'
 
 const Categories: FC = () => {
@@ -17,6 +17,10 @@ const Categories: FC = () => {
 		loading: s.categories.loading,
 		data: s.categories.data,
 	}))
+
+	useEffect(() => {
+		getProducts({ product_name: filters.name, category_id: filters.category_id })
+	}, [filters.category_id])
 
 	useLayoutEffect(() => {
 		getCategories()
@@ -39,7 +43,7 @@ const Categories: FC = () => {
 					</Button>
 				))
 			) : (
-				<Typography variant='body2' sx={{ py: 2 }}>
+				<Typography variant='body2' sx={{ py: 2, textAlign: 'center' }}>
 					{t('no-categories')}
 				</Typography>
 			)}

@@ -5,11 +5,22 @@ import { FC, useEffect, useState } from 'react'
 import { darkMode, lightMode } from '../config'
 import { getCategoryName, getCurrencyName, getProductName } from '@/firebase/firestore/lists'
 import { fNumber } from '@/utils/format-number'
+import { basketActions, productsCountOnBasket } from '@/store/selling/basket'
+import { useDispatch } from '@/hooks/use-dispatch'
+import { useSelector } from '@/hooks/use-selector'
 
-const Product: FC<IProduct> = ({ category_id, currency_id, product_id, quantity, selling_price }) => {
-	const { mode } = useModeContext()
-
+const Product: FC<IProduct> = ({ category_id, currency_id, product_id, quantity, selling_price, ...product }) => {
 	const [styles, setStyles] = useState(lightMode)
+	const { mode } = useModeContext()
+	const dispatch = useDispatch()
+
+	const { orders } = useSelector(({ Basket: s }) => ({
+		orders: s.products,
+	}))
+
+	const handleClick = () => {
+		dispatch(basketActions.addProduct({ ...product, category_id, currency_id, product_id, quantity, selling_price }))
+	}
 
 	useEffect(() => {
 		if (mode === 'light') {
@@ -25,13 +36,14 @@ const Product: FC<IProduct> = ({ category_id, currency_id, product_id, quantity,
 			// spacing={1}
 			component={Card}
 			alignItems='center'
-			// onClick={handleClick}
+			onClick={() => (quantity - productsCountOnBasket(orders, product_id) > 0 ? handleClick() : () => {})}
 			sx={{
 				height: '100%',
 				userSelect: 'none',
 				transition: 'all 0.2s ease',
 				background: styles.product_card_bg,
 				boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+				opacity: quantity - productsCountOnBasket(orders, product_id) === 0 ? (mode === 'light' ? 0.8 : 0.6) : 1,
 				cursor: 'pointer',
 				// ...(isActive &&
 				// 	activeTab !== 1 && {
@@ -42,11 +54,14 @@ const Product: FC<IProduct> = ({ category_id, currency_id, product_id, quantity,
 				display: 'flex',
 				flexDirection: 'column',
 				justifyContent: 'space-between',
-				':active': {
-					transform: 'scale(0.95)',
-					background: styles.product_card_bg_active,
-					boxShadow: '10px 10px 40px rgba(0, 0, 0, 0.1)',
-				},
+				':active':
+					quantity - productsCountOnBasket(orders, product_id) > 0
+						? {
+								transform: 'scale(0.95)',
+								background: styles.product_card_bg_active,
+								boxShadow: '10px 10px 40px rgba(0, 0, 0, 0.1)',
+							}
+						: {},
 			}}
 		>
 			<Stack alignItems='center'>
@@ -79,7 +94,7 @@ const Product: FC<IProduct> = ({ category_id, currency_id, product_id, quantity,
 					mb: -0.6,
 				}}
 			>
-				{fNumber(quantity)}
+				{fNumber(quantity - productsCountOnBasket(orders, product_id))}
 			</Typography>
 		</Stack>
 	)

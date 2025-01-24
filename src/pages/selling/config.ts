@@ -10,8 +10,8 @@ interface IMode {
 const darkMode: IMode = {
 	sub_color: '#C4CDD5',
 	main_color: '#FFFFFF',
-	order_card_bg: '#161C24',
-	product_card_bg: '#161C24',
+	order_card_bg: '#161c24d0',
+	product_card_bg: '#161c24d0',
 	order_card_bg_active: '#0E1010',
 	product_card_bg_active: '#0E1010',
 }

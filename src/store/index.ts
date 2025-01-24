@@ -9,7 +9,7 @@ const persistedReducer = persistReducer<any>(
 		storage,
 		version: 5,
 		key: 'root',
-		whitelist: ['App'],
+		whitelist: ['App', 'Basket'],
 		transforms: [
 			encryptTransform({
 				secretKey: 'QuYu1N1fZWuN3SFJ99d8l1CKyBFKs2+9VtBEjSWc0URLLcmoGnuF1KW/PHC/xgse',

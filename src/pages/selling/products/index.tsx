@@ -3,11 +3,12 @@ import { getProducts } from '@/firebase/firestore/selling'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { useSelector } from '@/hooks/use-selector'
 import { sellingActions } from '@/store/selling'
-import { Button, Card, FormControl, Grid, Grid2, IconButton, InputAdornment, Skeleton, Stack, TextField, Typography } from '@mui/material'
-import { FC, useLayoutEffect } from 'react'
+import { Button, Card, FormControl, Grid2, IconButton, InputAdornment, Skeleton, Stack, TextField, Typography } from '@mui/material'
+import { FC, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import Product from './Product'
 import LazyImage from '@/components/image'
+import { debounce } from 'lodash'
 
 const Products: FC = () => {
 	const [t] = useTranslation()
@@ -19,9 +20,15 @@ const Products: FC = () => {
 		data: s.products.data,
 	}))
 
-	useLayoutEffect(() => {
-		getProducts()
-	}, [])
+	const delayFunction = useCallback(
+		debounce((value: string) => getProducts({ product_name: value, category_id: filters.category_id }), 500),
+		[],
+	)
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		dispatch(sellingActions.setFilters({ name: e.target.value }))
+		delayFunction(e.target.value)
+	}
 
 	return (
 		<Card sx={{ p: 1.8, height: '100%', overflowY: 'auto', scrollbarWidth: 'thin' }}>
@@ -31,7 +38,7 @@ const Products: FC = () => {
 						size='small'
 						value={filters.name}
 						placeholder={t('search')}
-						onChange={e => dispatch(sellingActions.setFilters({ name: e.target.value }))}
+						onChange={handleChange}
 						InputProps={{
 							endAdornment: (
 								<InputAdornment position='end'>
@@ -62,15 +69,14 @@ const Products: FC = () => {
 							</Grid2>
 						))
 					) : (
-						<Grid2 size={12} sx={{ height: '100%' }}>
+						<Grid2 size={12}>
 							<Stack
 								alignItems='center'
 								justifyContent='center'
 								sx={{
-									height: 'calc(100% - 50px)',
-									border: '1px solid red',
+									height: 'calc(100vh - 220px)',
 									textAlign: 'center',
-									p: theme => theme.spacing(8, 2),
+									p: theme => theme.spacing(15, 2),
 								}}
 							>
 								<LazyImage src={'/illustration_empty_content.svg'} alt='no data' height='200' />

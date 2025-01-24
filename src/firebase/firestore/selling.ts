@@ -2,7 +2,7 @@ import { store } from '@/store'
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 import { app } from '../config'
 import { sellingActions } from '@/store/selling'
-import { ILanguage } from './lists'
+import { getProductName, ILanguage } from './lists'
 import { IProduct } from '@/store/selling/types'
 
 const db = getFirestore(app)
@@ -24,24 +24,34 @@ export const getCategories = async () => {
 		),
 	)
 
-	setTimeout(() => {
-		store.dispatch(sellingActions.setCategoriesLoading(false))
-	}, 400)
+	store.dispatch(sellingActions.setCategoriesLoading(false))
 }
 
-export const getProducts = async () => {
+export const getProducts = async ({ product_name = '', category_id = '' }: { product_name?: string; category_id?: string }) => {
 	store.dispatch(sellingActions.setProductsLoading(true))
 
 	const user_id = store.getState().App.user?.uid
 	const response = await getDocs(collection(db, 'warehouse'))
 
-	store.dispatch(
-		sellingActions.setProductsData(
-			response.docs.map(doc => doc.data())?.length ? response.docs.map(doc => doc.data())[0].products.filter((f: IProduct) => f.user_id === user_id) : [],
-		),
-	)
+	const products = response.docs.map(doc => doc.data())?.length
+		? response.docs
+				.map(doc => doc.data())[0]
+				.products.filter((f: IProduct) => {
+					const isUserMatch = f.user_id === user_id
+					let isCategoryMatch = true
+					let isProductNameMatch = true
 
-	setTimeout(() => {
-		store.dispatch(sellingActions.setProductsLoading(false))
-	}, 400)
+					if (category_id) {
+						isCategoryMatch = f.category_id === category_id
+					}
+					if (product_name) {
+						isProductNameMatch = getProductName(f.product_id).toLowerCase().includes(product_name.toLowerCase())
+					}
+
+					return isUserMatch && isCategoryMatch && isProductNameMatch
+				})
+		: []
+
+	store.dispatch(sellingActions.setProductsData(products))
+	store.dispatch(sellingActions.setProductsLoading(false))
 }
