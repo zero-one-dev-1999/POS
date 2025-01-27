@@ -37,6 +37,7 @@ const FormComponent: FC<FormikProps<IOutcomeFormValues>> = ({ handleSubmit, valu
 	}))
 
 	const lists = useSelector(s => s.Lists.lists)
+	const currenciesList = useSelector(s => s.Lists.currenciesList)
 
 	useEffect(() => {
 		if (isUpdate && formValues) {
@@ -144,7 +145,7 @@ const FormComponent: FC<FormikProps<IOutcomeFormValues>> = ({ handleSubmit, valu
 													/>
 												</TableCell>
 												<TableCell>
-													<FormikSelect withoutHelperText readOnly field={`document_items[${index}].currency_id`} options={lists.currenciesList} />
+													<FormikSelect withoutHelperText readOnly field={`document_items[${index}].currency_id`} options={currenciesList} />
 												</TableCell>
 												<TableCell>
 													<IconButton disabled={values.document_items?.length === 1} type='button' color='error' onClick={() => remove(index)}>

@@ -7,7 +7,7 @@ import { IData } from './types'
 import { ActionColumnCell, getColumnWithOrder, TextColumnFilter } from '@/utils/react-table'
 import { useTranslation } from 'react-i18next'
 import { useConfirm } from 'material-ui-confirm'
-import { getCategoriesList, getCurrenciesList, getUnitsList } from '@/firebase/firestore/lists'
+import { getCategoriesList, getUnitsList } from '@/firebase/firestore/lists'
 
 const Table: FC = () => {
 	const [t] = useTranslation()
@@ -68,7 +68,6 @@ const Table: FC = () => {
 	useLayoutEffect(() => {
 		getCategoriesList()
 		getUnitsList()
-		getCurrenciesList()
 	}, [])
 
 	return <TableComponent data={data} columns={columns} loading={loading} onChange={params => getProductsData()} />

@@ -3,7 +3,7 @@ import { useModeContext } from '@/theme/modeContext'
 import { Card, Stack, Typography } from '@mui/material'
 import { FC, useEffect, useState } from 'react'
 import { darkMode, lightMode } from '../config'
-import { getCategoryName, getCurrencyName, getProductName } from '@/firebase/firestore/lists'
+import { getCategoryName, getProductName } from '@/firebase/firestore/lists'
 import { fNumber } from '@/utils/format-number'
 import { basketActions, productsCountOnBasket } from '@/store/selling/basket'
 import { useDispatch } from '@/hooks/use-dispatch'
@@ -19,7 +19,18 @@ const Product: FC<IProduct> = ({ category_id, currency_id, product_id, quantity,
 	}))
 
 	const handleClick = () => {
-		dispatch(basketActions.addProduct({ ...product, category_id, currency_id, product_id, quantity, selling_price }))
+		dispatch(
+			basketActions.addProduct({
+				...product,
+				category_id,
+				currency_id,
+				product_id,
+				quantity,
+				selling_price,
+				product_name: getProductName(product_id),
+				category_name: getCategoryName(category_id),
+			}),
+		)
 	}
 
 	useEffect(() => {
@@ -81,7 +92,7 @@ const Product: FC<IProduct> = ({ category_id, currency_id, product_id, quantity,
 					{getCategoryName(category_id)}
 				</Typography>
 				<Typography variant='button' color={styles.main_color}>
-					{fNumber(Number(selling_price))} {getCurrencyName(currency_id)}
+					{fNumber(Number(selling_price))} {currency_id}
 				</Typography>
 			</Stack>
 

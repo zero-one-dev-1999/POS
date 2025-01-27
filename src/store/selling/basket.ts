@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { IBasketState } from './types'
+import { getCategoryName, getProductName } from '@/firebase/firestore/lists'
 
 const initialState: IBasketState = {
 	page: 1,
@@ -107,6 +108,7 @@ const { actions, reducer } = createSlice({
 			})
 		},
 		addProduct(state, { payload }) {
+			console.log(state)
 			if (state.products?.[state.page - 1]?.find(item => item.product_id === payload.product_id)) {
 				state.products = state.products.map((item, index) => {
 					if (index === state.page - 1) {
@@ -125,7 +127,13 @@ const { actions, reducer } = createSlice({
 			} else {
 				state.products = state.products.map((item, index) => {
 					if (index === state.page - 1) {
-						return [{ ...payload, count: 1 }, ...item]
+						return [
+							{
+								...payload,
+								count: 1,
+							},
+							...item,
+						]
 					}
 					return item
 				})

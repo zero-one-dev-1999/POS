@@ -2,7 +2,7 @@ import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, getFirestore, quer
 import { app } from '../config'
 import { store } from '@/store'
 import { productsActions } from '@/store/products'
-import { getCategoryName, getCurrencyName, getUnitName, ILanguage } from './lists'
+import { getCategoryName, getUnitName, ILanguage } from './lists'
 import { IProduct } from '@/pages/products/types'
 import { t } from 'i18next'
 import { toastErrorMessage, toastSuccessMessage } from '@/utils/toast'
@@ -30,7 +30,7 @@ export const getProductsData = async () => {
 							: doc.data().translations.find((lang: ILanguage) => lang.lang_short_name === 'uz')?.name || '',
 						category_name: getCategoryName(doc.data().category_id),
 						unit_name: getUnitName(doc.data().unit_id),
-						currency_name: getCurrencyName(doc.data().currency_id),
+						currency_name: doc.data().currency_id,
 					})),
 				),
 			)

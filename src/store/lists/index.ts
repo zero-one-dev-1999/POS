@@ -11,21 +11,24 @@ interface IList {
 	[key: string]: any
 }
 
-type ListsKeys = 'categoriesList' | 'unitsList' | 'productsList' | 'currenciesList' | 'productsInWarehouseList'
+type ListsKeys = 'categoriesList' | 'unitsList' | 'productsList' | 'productsInWarehouseList'
 
 type Lists = Record<ListsKeys, IList[]>
 
-const initialState: { lists: Lists; statusList: IStatusList[] } = {
+const initialState: { lists: Lists; statusList: IStatusList[]; currenciesList: IList[] } = {
 	lists: {
 		categoriesList: [],
 		unitsList: [],
 		productsList: [],
-		currenciesList: [],
 		productsInWarehouseList: [],
 	},
 	statusList: [
 		{ value: 1, label: 'Saqlanmagan' },
 		{ value: 2, label: 'Saqlangan' },
+	],
+	currenciesList: [
+		{ value: 'USD', label: 'USD', UZS: 13000, USD: 1 },
+		{ value: 'UZS', label: 'UZS', USD: 1 / 13000, UZS: 1 },
 	],
 }
 

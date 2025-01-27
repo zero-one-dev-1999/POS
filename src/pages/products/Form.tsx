@@ -27,6 +27,7 @@ const FormComponent: FC<FormikProps<IProduct>> = ({ handleSubmit, values, initia
 	}))
 
 	const lists = useSelector(s => s.Lists.lists)
+	const currenciesList = useSelector(s => s.Lists.currenciesList)
 
 	useEffect(() => {
 		if (isUpdate && formValues) {
@@ -113,7 +114,7 @@ const FormComponent: FC<FormikProps<IProduct>> = ({ handleSubmit, values, initia
 						<FormikSelect field='unit_id' label={t('unit')} options={lists.unitsList} />
 					</Grid2>
 					<Grid2 size={6}>
-						<FormikSelect field='currency_id' label={t('currency')} options={lists.currenciesList} />
+						<FormikSelect field='currency_id' label={t('currency')} options={currenciesList} />
 					</Grid2>
 				</Grid2>
 			</DialogContent>

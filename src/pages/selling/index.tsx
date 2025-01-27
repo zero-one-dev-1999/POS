@@ -1,17 +1,15 @@
 import { Grid2, Stack } from '@mui/material'
 import { FC, useLayoutEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import Categories from './categories'
 import Products from './products'
 import Details from './details'
-import { getCategoriesList, getCurrenciesList, getProductsList, getUnitsList } from '@/firebase/firestore/lists'
+import { getCategoriesList, getProductsList, getUnitsList } from '@/firebase/firestore/lists'
 
 const Selling: FC = () => {
 	useLayoutEffect(() => {
 		getCategoriesList()
 		getProductsList()
 		getUnitsList()
-		getCurrenciesList()
 	}, [])
 	return (
 		<Stack sx={{ px: 1.2, paddingTop: '20px', paddingBottom: '10px' }}>

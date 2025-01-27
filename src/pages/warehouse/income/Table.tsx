@@ -6,7 +6,7 @@ import { IData } from '../../../store/warehouse/income/types'
 import { ActionColumnCell, getColumnWithOrder, StatusColumnCell, TextColumnFilter } from '@/utils/react-table'
 import { useTranslation } from 'react-i18next'
 import { useConfirm } from 'material-ui-confirm'
-import { getCategoriesList, getCurrenciesList, getUnitsList } from '@/firebase/firestore/lists'
+import { getCategoriesList, getUnitsList } from '@/firebase/firestore/lists'
 import { deleteIncomeDoc, getIncomeDocs } from '@/firebase/firestore/income'
 import { generatePath, useNavigate } from 'react-router'
 import { POS_WAREHOUSE_INCOME_UPDATE_PAGE, POS_WAREHOUSE_INCOME_VIEW_PAGE } from '@/helpers/pages'
@@ -66,7 +66,6 @@ const Table: FC = () => {
 	useLayoutEffect(() => {
 		getCategoriesList()
 		getUnitsList()
-		getCurrenciesList()
 	}, [])
 
 	return <TableComponent data={data} columns={columns} loading={loading} onChange={params => getIncomeDocs()} />

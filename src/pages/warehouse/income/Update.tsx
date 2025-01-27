@@ -1,4 +1,4 @@
-import { getCurrenciesList, getProductsList } from '@/firebase/firestore/lists'
+import { getProductsList } from '@/firebase/firestore/lists'
 import { FC, useLayoutEffect } from 'react'
 import Form from './Form'
 import { updateStartIncomeDoc } from '@/firebase/firestore/income'
@@ -10,7 +10,6 @@ const UpdateIncome: FC = () => {
 	useLayoutEffect(() => {
 		updateStartIncomeDoc(id as string)
 		getProductsList()
-		getCurrenciesList()
 	}, [])
 
 	return <Form />

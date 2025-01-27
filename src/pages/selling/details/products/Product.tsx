@@ -1,16 +1,16 @@
 import { IProduct } from '@/store/selling/types'
 import { Button, Card, IconButton, Stack, TextField, Typography } from '@mui/material'
 import { FC, useEffect, useRef, useState } from 'react'
-import { darkMode, lightMode } from '../config'
 import { useModeContext } from '@/theme/modeContext'
-import { getCategoryName, getCurrencyName, getProductName } from '@/firebase/firestore/lists'
 import Iconify from '@/components/iconify'
 import { useDispatch } from '@/hooks/use-dispatch'
 import { basketActions, productsCountOnBasket } from '@/store/selling/basket'
 import { fNumber } from '@/utils/format-number'
 import { useSelector } from '@/hooks/use-selector'
+import { darkMode, lightMode } from '../../config'
+import { useDetailsContext } from '../context'
 
-const Product: FC<IProduct> = ({ count, selling_price, product_id, category_id, currency_id, quantity }) => {
+const Product: FC<IProduct> = ({ count, selling_price, product_id, currency_id, quantity, product_name, category_name }) => {
 	const [styles, setStyles] = useState(lightMode)
 	const { mode } = useModeContext()
 	const dispatch = useDispatch()
@@ -20,6 +20,9 @@ const Product: FC<IProduct> = ({ count, selling_price, product_id, category_id, 
 		page: s.page,
 		orders: s.products,
 	}))
+
+	const currenciesList = useSelector(s => s.Lists.currenciesList)
+	const { currencyId } = useDetailsContext()
 
 	const handleRemoveItem = () => {
 		dispatch(basketActions.removeProduct(product_id))
@@ -79,9 +82,18 @@ const Product: FC<IProduct> = ({ count, selling_price, product_id, category_id, 
 				// }),
 			}}
 		>
-			<Stack sx={{ gap: 2, display: 'flex', flexDirection: 'row', position: 'relative', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+			<Stack
+				sx={{
+					gap: 2,
+					display: 'flex',
+					flexDirection: 'row',
+					position: 'relative',
+					alignItems: 'flex-start',
+					justifyContent: 'space-between',
+				}}
+			>
 				<Typography variant='subtitle1' sx={{ color: styles?.main_color }}>
-					{getProductName(product_id)}
+					{product_name}
 				</Typography>
 				<IconButton color='error' sx={{ mt: -2, mr: -2 }} onClick={handleRemoveItem}>
 					<Iconify width={28} icon='mingcute:delete-2-fill' />
@@ -90,14 +102,29 @@ const Product: FC<IProduct> = ({ count, selling_price, product_id, category_id, 
 			<Typography
 				mb={1}
 				variant='caption'
-				sx={{ gap: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', color: styles.sub_color, justifyContent: 'space-between' }}
+				sx={{
+					gap: 1,
+					display: 'flex',
+					flexDirection: 'row',
+					alignItems: 'center',
+					color: styles.sub_color,
+					justifyContent: 'space-between',
+				}}
 			>
-				<span>{getCategoryName(category_id)}</span>
+				<span>{category_name}</span>
 				<span style={{ fontSize: '15px', fontWeight: 'bold', color: styles.main_color }}>
-					{fNumber(Number(selling_price))} {getCurrencyName(currency_id)}
+					{fNumber(Number(selling_price))} {currency_id}
 				</span>
 			</Typography>
-			<Stack sx={{ gap: 1, display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+			<Stack
+				sx={{
+					gap: 1,
+					display: 'flex',
+					alignItems: 'center',
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+				}}
+			>
 				<Stack spacing={0.3} direction='row' alignItems='center'>
 					<Button color='error' variant='contained' sx={{ minWidth: '0px' }} onClick={handleDecrement} disabled={count === 1}>
 						<Iconify icon='ic:round-minus' />
@@ -112,7 +139,15 @@ const Product: FC<IProduct> = ({ count, selling_price, product_id, category_id, 
 								handleChangeQty(e.target.value)
 							}}
 							value={String(count).split('').includes('.') ? Number(count).toFixed(2) : count}
-							inputProps={{ style: { color: '#fff', padding: '1px', outline: 'none', fontSize: '24px', textAlign: 'center' } }}
+							inputProps={{
+								style: {
+									color: '#fff',
+									padding: '1px',
+									outline: 'none',
+									fontSize: '24px',
+									textAlign: 'center',
+								},
+							}}
 							sx={{
 								width: '80px',
 								'& .MuiOutlinedInput-root': {
@@ -131,7 +166,7 @@ const Product: FC<IProduct> = ({ count, selling_price, product_id, category_id, 
 					</Button>
 				</Stack>
 				<Typography sx={{ color: styles.sub_color }} variant='h5'>
-					{fNumber(Number(selling_price) * count)}
+					{fNumber(Number(selling_price) * currenciesList.find(f => f.value === currency_id)?.[currencyId] * count)} {currencyId}
 				</Typography>
 			</Stack>
 		</Stack>

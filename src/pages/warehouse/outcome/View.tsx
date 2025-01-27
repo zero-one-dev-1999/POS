@@ -4,7 +4,7 @@ import SaveAndFinishButton from '@/components/button/SaveAndFinishBtn'
 import UpdateButton from '@/components/button/UpdateButton'
 import Loader from '@/components/loader'
 import { deleteOutcomeDoc, saveAndFinishOutcomeDoc, viewOutcomeDoc } from '@/firebase/firestore/outcome'
-import { getCurrenciesList, getProductsInWarehouseList, getProductsList } from '@/firebase/firestore/lists'
+import { getProductsInWarehouseList, getProductsList } from '@/firebase/firestore/lists'
 import { POS_WAREHOUSE_OUTCOME_INDEX_PAGE, POS_WAREHOUSE_OUTCOME_UPDATE_PAGE } from '@/helpers/pages'
 import { useSelector } from '@/hooks/use-selector'
 import { fNumber } from '@/utils/format-number'
@@ -24,6 +24,7 @@ const ViewOutcome: FC = () => {
 	const { loading, data } = useSelector(({ WarehouseOutcome: s }) => ({ data: s.view, loading: s.loading.data }))
 
 	const lists = useSelector(s => s.Lists.lists)
+	const currenciesList = useSelector(s => s.Lists.currenciesList)
 
 	const handleClick = () => {
 		confirm({
@@ -66,7 +67,6 @@ const ViewOutcome: FC = () => {
 	useLayoutEffect(() => {
 		getProductsList()
 		getProductsInWarehouseList()
-		getCurrenciesList()
 		viewOutcomeDoc(id as string)
 	}, [])
 	return (
@@ -118,7 +118,7 @@ const ViewOutcome: FC = () => {
 								<TableCell>{index + 1}</TableCell>
 								<TableCell>{lists.productsInWarehouseList?.find((f: { value: string }) => f.value === item.product_id)?.label}</TableCell>
 								<TableCell>{fNumber(item.quantity)}</TableCell>
-								<TableCell>{lists.currenciesList?.find((f: { value: string }) => f.value === item.currency_id)?.label}</TableCell>
+								<TableCell>{currenciesList?.find((f: { value: string }) => f.value === item.currency_id)?.label}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

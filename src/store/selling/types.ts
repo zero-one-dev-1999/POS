@@ -8,6 +8,8 @@ interface IProduct {
 	unit_id: string
 	user_id: string
 	count: number
+	product_name: string
+	category_name: string
 }
 
 interface IState {

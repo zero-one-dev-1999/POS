@@ -64,5 +64,7 @@
 	"successfully-deleted": "Muvaffaqiyatli o'chirildi",
 	"successfully-created": "Muvaffaqiyatli yaratildi",
 	"successfully-saved": "Muvaffaqiyatli saqlandi",
-	"the-product-in-the-entered-quantity-is-not-available": "Kirilgan miqdorda mahsulot mavjud emas"
+	"the-product-in-the-entered-quantity-is-not-available": "Kirilgan miqdorda mahsulot mavjud emas",
+	"basket": "Savat",
+	"trading-currency": "Savdo valyutasi"
 }

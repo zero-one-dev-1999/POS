@@ -36,7 +36,7 @@ const Categories: FC = () => {
 						key={index}
 						variant='contained'
 						onClick={() => dispatch(sellingActions.setFilters({ category_id: item.value }))}
-						sx={{ py: 2, color: 'white', backgroundColor: colors[index % 12], width: '100%', mb: 1 }}
+						sx={{ py: 2, px: 1, color: 'white', backgroundColor: colors[index % 12], width: '100%', mb: 1 }}
 						startIcon={filters?.category_id === item.value ? <Iconify icon='icon-park-outline:dot' /> : null}
 					>
 						{item?.label}

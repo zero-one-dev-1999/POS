@@ -5,18 +5,25 @@ import { Button, Divider, Stack, Typography } from '@mui/material'
 import { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import Product from './Product'
+import { useDetailsContext } from '../context'
 
 const Products: FC = () => {
 	const [t, { language }] = useTranslation()
-	const { page, orders, loading } = useSelector(({ Basket: s }) => ({
+	const { page, orders } = useSelector(({ Basket: s }) => ({
 		page: s.page,
 		orders: s.products,
 		loading: s.loading,
 	}))
+	const currenciesList = useSelector(s => s.Lists.currenciesList)
+
+	const { currencyId } = useDetailsContext()
 
 	const products = useMemo(() => orders?.[page - 1] ?? [], [page, orders])
 
-	const totalPrice = useMemo(() => products.reduce((acc, cur) => acc + cur.selling_price * cur.count, 0), [products])
+	const totalPrice = useMemo(
+		() => products.reduce((acc, cur) => acc + cur.selling_price * currenciesList.find(f => f.value === cur.currency_id)?.[currencyId] * cur.count, 0),
+		[products, currencyId, currenciesList],
+	)
 
 	const renderedProducts = useMemo(
 		() => (
@@ -53,7 +60,7 @@ const Products: FC = () => {
 			</>
 		),
 		// [products, orderIndex, language],
-		[products, language],
+		[products, language, currencyId, currenciesList],
 	)
 
 	return (
@@ -68,7 +75,7 @@ const Products: FC = () => {
 				sx={{ mt: '6px', width: '100%' }}
 				disabled={!products?.length}
 			>
-				{t('payment')} - {fNumber(totalPrice)}
+				{t('payment')} - {fNumber(totalPrice)} {currencyId}
 			</Button>
 		</>
 	)

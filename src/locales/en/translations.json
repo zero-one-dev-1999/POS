@@ -64,5 +64,7 @@
 	"successfully-deleted": "Successfully deleted",
 	"successfully-created": "Successfully created",
 	"successfully-saved": "Successfully saved",
-	"the-product-in-the-entered-quantity-is-not-available": "The product in the entered quantity is not available"
+	"the-product-in-the-entered-quantity-is-not-available": "The product in the entered quantity is not available",
+	"basket": "Basket",
+	"trading-currency": "Trading currency"
 }

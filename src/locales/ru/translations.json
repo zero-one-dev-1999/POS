@@ -64,5 +64,7 @@
 	"successfully-deleted": "Вы успешно удалили",
 	"successfully-created": "Вы успешно создали",
 	"successfully-saved": "Вы успешно сохранили",
-	"the-product-in-the-entered-quantity-is-not-available": "Продукт в введенном количестве не доступен"
+	"the-product-in-the-entered-quantity-is-not-available": "Продукт в введенном количестве не доступен",
+	"basket": "Корзина",
+	"trading-currency": "Торговая валюта"
 }
