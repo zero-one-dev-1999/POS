@@ -14,6 +14,8 @@ const initialState: IState = {
 		loading: false,
 		data: [],
 	},
+
+	loading: false,
 }
 
 const { actions, reducer } = createSlice({
@@ -25,6 +27,9 @@ const { actions, reducer } = createSlice({
 		},
 		setCategoriesData(state, { payload }) {
 			state.categories.data = payload
+		},
+		setLoading(state, { payload }) {
+			state.loading = payload
 		},
 		setCategoriesLoading(state, { payload }) {
 			state.categories.loading = payload

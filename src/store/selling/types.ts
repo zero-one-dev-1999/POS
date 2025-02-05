@@ -22,6 +22,7 @@ interface IState {
 		loading: boolean
 		data: Array<IProduct>
 	}
+	loading: boolean
 }
 
 interface IBasketState {
@@ -30,4 +31,14 @@ interface IBasketState {
 	loading: boolean
 }
 
-export type { IState, IProduct, IBasketState }
+interface ISellingPayload {
+	discount_price: number
+	cash: number
+	terminal: number
+	debt: number
+	client_id: string | undefined
+	currency_id: string | null
+	products: Array<IProduct>
+}
+
+export type { IState, IProduct, IBasketState, ISellingPayload }

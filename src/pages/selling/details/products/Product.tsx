@@ -70,7 +70,7 @@ const Product: FC<IProduct> = ({ count, selling_price, product_id, currency_id, 
 	}, [mode])
 	return (
 		<Stack
-			p={2}
+			p={1.2}
 			component={Card}
 			sx={{
 				background: styles.order_card_bg,
@@ -95,7 +95,7 @@ const Product: FC<IProduct> = ({ count, selling_price, product_id, currency_id, 
 				<Typography variant='subtitle1' sx={{ color: styles?.main_color }}>
 					{product_name}
 				</Typography>
-				<IconButton color='error' sx={{ mt: -2, mr: -2 }} onClick={handleRemoveItem}>
+				<IconButton color='error' sx={{ mt: -1.4, mr: -1.2 }} onClick={handleRemoveItem}>
 					<Iconify width={28} icon='mingcute:delete-2-fill' />
 				</IconButton>
 			</Stack>
@@ -165,7 +165,7 @@ const Product: FC<IProduct> = ({ count, selling_price, product_id, currency_id, 
 						<Iconify icon='ic:round-plus' />
 					</Button>
 				</Stack>
-				<Typography sx={{ color: styles.sub_color }} variant='h5'>
+				<Typography sx={{ color: styles.sub_color }} variant='h6'>
 					{fNumber(Number(selling_price) * currenciesList.find(f => f.value === currency_id)?.[currencyId] * count)} {currencyId}
 				</Typography>
 			</Stack>

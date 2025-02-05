@@ -16,7 +16,7 @@ const Products: FC = () => {
 	}))
 	const currenciesList = useSelector(s => s.Lists.currenciesList)
 
-	const { currencyId } = useDetailsContext()
+	const { currencyId, setPaymentModal } = useDetailsContext()
 
 	const products = useMemo(() => orders?.[page - 1] ?? [], [page, orders])
 
@@ -24,6 +24,10 @@ const Products: FC = () => {
 		() => products.reduce((acc, cur) => acc + cur.selling_price * currenciesList.find(f => f.value === cur.currency_id)?.[currencyId] * cur.count, 0),
 		[products, currencyId, currenciesList],
 	)
+
+	const handleClick = () => {
+		setPaymentModal((prev: { isOpen: boolean }) => ({ ...prev, isOpen: true }))
+	}
 
 	const renderedProducts = useMemo(
 		() => (
@@ -67,14 +71,7 @@ const Products: FC = () => {
 		<>
 			<Stack sx={{ height: 'calc(100vh - 285px)', overflowY: 'auto', scrollbarWidth: 'thin' }}>{renderedProducts}</Stack>
 			<Divider sx={{ mt: '5px' }} />
-			<Button
-				size='large'
-				color='primary'
-				variant='contained'
-				// onClick={handlePayment}
-				sx={{ mt: '6px', width: '100%' }}
-				disabled={!products?.length}
-			>
+			<Button size='large' color='primary' variant='contained' onClick={handleClick} sx={{ mt: '6px', width: '100%' }} disabled={!products?.length}>
 				{t('payment')} - {fNumber(totalPrice)} {currencyId}
 			</Button>
 		</>

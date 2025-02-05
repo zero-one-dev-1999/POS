@@ -66,5 +66,6 @@
 	"successfully-saved": "Successfully saved",
 	"the-product-in-the-entered-quantity-is-not-available": "The product in the entered quantity is not available",
 	"basket": "Basket",
-	"trading-currency": "Trading currency"
+	"trading-currency": "Trading currency",
+	"discount": "Discount"
 }

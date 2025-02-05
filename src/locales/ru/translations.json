@@ -66,5 +66,6 @@
 	"successfully-saved": "Вы успешно сохранили",
 	"the-product-in-the-entered-quantity-is-not-available": "Продукт в введенном количестве не доступен",
 	"basket": "Корзина",
-	"trading-currency": "Торговая валюта"
+	"trading-currency": "Торговая валюта",
+	"discount": "Скидка"
 }

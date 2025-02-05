@@ -1,9 +1,11 @@
 import { store } from '@/store'
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
+import { addDoc, collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 import { app } from '../config'
 import { sellingActions } from '@/store/selling'
 import { getProductName, ILanguage } from './lists'
-import { IProduct } from '@/store/selling/types'
+import { IProduct, ISellingPayload } from '@/store/selling/types'
+import { toastErrorMessage, toastSuccessMessage } from '@/utils/toast'
+import { t } from 'i18next'
 
 const db = getFirestore(app)
 export const getCategories = async () => {
@@ -54,4 +56,21 @@ export const getProducts = async ({ product_name = '', category_id = '' }: { pro
 
 	store.dispatch(sellingActions.setProductsData(products))
 	store.dispatch(sellingActions.setProductsLoading(false))
+}
+
+export const sellingProducts = async (payload: ISellingPayload, cb: (props: ISellingPayload) => void) => {
+	try {
+		const user_id = store.getState().App.user?.uid
+		store.dispatch(sellingActions.setLoading(true))
+		await addDoc(collection(db, 'products-sold'), { ...payload, status: 1, user_id })
+
+		setTimeout(() => {
+			toastSuccessMessage(t('successfully'))
+			store.dispatch(sellingActions.setLoading(false))
+			cb(payload)
+		}, 300)
+	} catch (error) {
+		console.log(error)
+		toastErrorMessage(t('something-went-wrong'))
+	}
 }
