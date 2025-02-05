@@ -108,7 +108,6 @@ const { actions, reducer } = createSlice({
 			})
 		},
 		addProduct(state, { payload }) {
-			console.log(state)
 			if (state.products?.[state.page - 1]?.find(item => item.product_id === payload.product_id)) {
 				state.products = state.products.map((item, index) => {
 					if (index === state.page - 1) {

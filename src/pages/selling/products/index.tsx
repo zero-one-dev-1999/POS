@@ -59,7 +59,7 @@ const Products: FC = () => {
 					{loading ? (
 						Array.from({ length: 18 }).map((_, index) => (
 							<Grid2 key={index} size={4}>
-								<Skeleton component={Card} variant='rectangular' sx={{ py: 6, width: '100%' }} />
+								<Skeleton component={Card} variant='rectangular' sx={{ py: 7, width: '100%' }} />
 							</Grid2>
 						))
 					) : data.length ? (

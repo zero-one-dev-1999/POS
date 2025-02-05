@@ -35,6 +35,8 @@ const CheckModal: FC = () => {
 
 	const { props } = checkModal
 
+	const clientsList = useSelector(s => s.Lists.lists.clientsList)
+
 	return (
 		<Dialog open={checkModal.isOpen} fullWidth maxWidth='sm'>
 			<DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, height: '64px' }}>
@@ -71,8 +73,8 @@ const CheckModal: FC = () => {
 								<TableRow>
 									<TableCell>{index + 1}</TableCell>
 									<TableCell>{product.product_name}</TableCell>
-									<TableCell>{product.quantity}</TableCell>
-									<TableCell>{product.selling_price}</TableCell>
+									<TableCell>{fNumber(product.count)}</TableCell>
+									<TableCell>{fNumber(product.selling_price)}</TableCell>
 									<TableCell>{fNumber(Number(product.selling_price) * currenciesList.find(f => f.value === product.currency_id)?.[currencyId] * product.count)}</TableCell>
 								</TableRow>
 							))}
@@ -102,19 +104,32 @@ const CheckModal: FC = () => {
 						<Typography variant='subtitle2' sx={{ mr: 1 }}>
 							{t('date')}
 						</Typography>
-						<span style={{ width: '100%', display: 'block', borderBottom: `1px dashed ${theme.palette.divider}`, marginBottom: '6px' }} />
+						<span style={{ width: '100%', display: 'block', borderBottom: `2px dotted ${theme.palette.divider}`, marginBottom: '6px' }} />
 						<Typography sx={{ ml: 1, whiteSpace: 'nowrap' }} variant='subtitle2'>
 							{new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })}
 						</Typography>
 					</Stack>
+					{props?.client_id ? (
+						<Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', spacing: 2 }}>
+							<Typography variant='subtitle2' sx={{ mr: 1 }}>
+								{t('client')}
+							</Typography>
+							<span style={{ width: '100%', display: 'block', borderBottom: `2px dotted ${theme.palette.divider}`, marginBottom: '6px' }} />
+							<Typography sx={{ ml: 1, whiteSpace: 'nowrap' }} variant='subtitle2'>
+								{clientsList.find(f => f.value === props.client_id)?.label}
+							</Typography>
+						</Stack>
+					) : (
+						''
+					)}
 					{props?.discount_price ? (
 						<Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', spacing: 2 }}>
 							<Typography variant='subtitle2' sx={{ mr: 1 }}>
 								{t('discount')}
 							</Typography>
-							<span style={{ width: '100%', display: 'block', borderBottom: `1px dashed ${theme.palette.divider}`, marginBottom: '6px' }} />
+							<span style={{ width: '100%', display: 'block', borderBottom: `2px dotted ${theme.palette.divider}`, marginBottom: '6px' }} />
 							<Typography sx={{ ml: 1, whiteSpace: 'nowrap' }} variant='subtitle2'>
-								{fNumber(props.discount_price)}
+								{fNumber(props.discount_price)} {currencyId}
 							</Typography>
 						</Stack>
 					) : (
@@ -125,9 +140,9 @@ const CheckModal: FC = () => {
 							<Typography variant='subtitle2' sx={{ mr: 1 }}>
 								{t('debt')}
 							</Typography>
-							<span style={{ width: '100%', display: 'block', borderBottom: `1px dashed ${theme.palette.divider}`, marginBottom: '6px' }} />
+							<span style={{ width: '100%', display: 'block', borderBottom: `2px dotted ${theme.palette.divider}`, marginBottom: '6px' }} />
 							<Typography sx={{ ml: 1, whiteSpace: 'nowrap' }} variant='subtitle2'>
-								{fNumber(props.debt)}
+								{fNumber(props.debt)} {currencyId}
 							</Typography>
 						</Stack>
 					) : (
@@ -138,9 +153,22 @@ const CheckModal: FC = () => {
 							<Typography variant='subtitle2' sx={{ mr: 1 }}>
 								{t('cash')}
 							</Typography>
-							<span style={{ width: '100%', display: 'block', borderBottom: `1px dashed ${theme.palette.divider}`, marginBottom: '6px' }} />
+							<span style={{ width: '100%', display: 'block', borderBottom: `2px dotted ${theme.palette.divider}`, marginBottom: '6px' }} />
 							<Typography sx={{ ml: 1, whiteSpace: 'nowrap' }} variant='subtitle2'>
-								{fNumber(props.cash)}
+								{fNumber(props.cash)} {currencyId}
+							</Typography>
+						</Stack>
+					) : (
+						''
+					)}
+					{props?.terminal ? (
+						<Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mt: 0, spacing: 2 }}>
+							<Typography variant='subtitle2' sx={{ mr: 1 }}>
+								{t('terminal')}
+							</Typography>
+							<span style={{ width: '100%', display: 'block', borderBottom: `2px dotted ${theme.palette.divider}`, marginBottom: '6px' }} />
+							<Typography sx={{ ml: 1, whiteSpace: 'nowrap' }} variant='subtitle2'>
+								{fNumber(props.terminal)} {currencyId}
 							</Typography>
 						</Stack>
 					) : (

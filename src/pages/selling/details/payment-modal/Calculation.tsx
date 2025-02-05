@@ -1,12 +1,14 @@
 import { useSelector } from '@/hooks/use-selector'
-import { Button, Card, Checkbox, Divider, FormControl, FormControlLabel, Grid2, IconButton, InputAdornment, Stack, Typography, useTheme } from '@mui/material'
-import { FC, useMemo } from 'react'
+import { Button, Card, Checkbox, Divider, FormControl, FormControlLabel, Grid2, IconButton, InputAdornment, InputLabel, Stack, Typography, useTheme } from '@mui/material'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDetailsContext } from '../context'
 import Iconify from '@/components/iconify'
 import { fNumber } from '@/utils/format-number'
 import NumericInput from '@/components/input/NumericInput'
 import Loader from '@/components/loader'
+import ClientModal from './Client'
+import Select from '@/components/select'
 
 const StartAdornment = (icon: string) => (
 	<InputAdornment position='start'>
@@ -17,12 +19,15 @@ const StartAdornment = (icon: string) => (
 const Calculation: FC = () => {
 	const [t] = useTranslation()
 	const theme = useTheme()
+	const [error, setError] = useState(false)
 
 	const currenciesList = useSelector(s => s.Lists.currenciesList)
+	const clientsList = useSelector(s => s.Lists.lists.clientsList)
 
 	const loading = useSelector(s => s.Selling.loading)
 
-	const { currencyId, isMix, setIsMix, handleSale, isDebt, setIsDebt, values, setValues, resultPrice, isBtnDisabled, discountPrice, refundSum } = useDetailsContext()
+	const { currencyId, isMix, setIsMix, handleSale, isDebt, setIsDebt, values, setValues, resultPrice, isBtnDisabled, discountPrice, refundSum, setClientModal } =
+		useDetailsContext()
 
 	const totalPaid = useMemo(() => {
 		if (isMix) {
@@ -39,15 +44,29 @@ const Calculation: FC = () => {
 				padding: '14px 16px',
 			},
 			'& .MuiInputLabel-root': {
-				fontSize: '22px',
+				fontSize: '21px !important',
 				fontWeight: 'bold',
 				marginTop: '-2px',
 				padding: '0 12px 0 4px',
-				backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#212B36',
+				backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#2C363F',
 			},
 		}),
 		[theme.palette.mode],
 	)
+
+	const handleSave = () => {
+		if (!error) {
+			handleSale()
+		}
+	}
+
+	useEffect(() => {
+		if (isDebt && !values.client_id && +values.debt > 0) {
+			setError(true)
+		} else {
+			setError(false)
+		}
+	}, [values.client_id, isDebt, values.debt])
 
 	return (
 		<Card sx={{ height: 'calc(100vh - 97px)', px: 2, pt: '6px', pb: '50px', position: 'relative' }}>
@@ -95,6 +114,25 @@ const Calculation: FC = () => {
 					/>
 				</Stack>
 				<Grid2 container spacing={3}>
+					<Grid2 size={12}>
+						<Stack spacing={0.2}>
+							<InputLabel sx={{ fontSize: '18px' }}>{t('client')}</InputLabel>
+							<Stack direction={'row'} alignItems={'flex-end'} justifyContent={'space-between'} gap={1}>
+								<FormControl fullWidth>
+									<Select size='medium' error={error} options={clientsList} value={values.client_id} setVal={e => setValues({ ...values, client_id: e ?? '' })} />
+								</FormControl>
+								<Button
+									sx={{ minWidth: '32px', padding: '26px 18px !important' }}
+									size='large'
+									color='success'
+									variant='contained'
+									onClick={() => setClientModal({ isOpen: true })}
+								>
+									<Iconify icon='eva:plus-fill' width={25} />
+								</Button>
+							</Stack>
+						</Stack>
+					</Grid2>
 					<Grid2 size={12}>
 						<FormControl fullWidth>
 							<NumericInput
@@ -279,10 +317,12 @@ const Calculation: FC = () => {
 			</Stack>
 			<Stack sx={{ position: 'absolute', bottom: '8px', left: 0, width: '100%', px: 2, height: '56px' }}>
 				<Divider sx={{ mb: '6px' }} />
-				<Button disabled={isBtnDisabled} onClick={handleSale} color='success' variant='contained' sx={{ height: '50px', fontSize: '18px' }}>
+				<Button disabled={isBtnDisabled} onClick={handleSave} color='success' variant='contained' sx={{ height: '50px', fontSize: '18px' }}>
 					{t('save')}
 				</Button>
 			</Stack>
+
+			<ClientModal />
 		</Card>
 	)
 }

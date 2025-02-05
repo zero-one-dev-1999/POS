@@ -6,6 +6,8 @@ import { getProductName, ILanguage } from './lists'
 import { IProduct, ISellingPayload } from '@/store/selling/types'
 import { toastErrorMessage, toastSuccessMessage } from '@/utils/toast'
 import { t } from 'i18next'
+import { basketActions } from '@/store/selling/basket'
+import { getProductsInWarehouse, updateProductsInWarehouse } from './warehouse'
 
 const db = getFirestore(app)
 export const getCategories = async () => {
@@ -65,10 +67,25 @@ export const sellingProducts = async (payload: ISellingPayload, cb: (props: ISel
 		await addDoc(collection(db, 'products-sold'), { ...payload, status: 1, user_id })
 
 		setTimeout(() => {
+			store.dispatch(basketActions.clearBasket())
 			toastSuccessMessage(t('successfully'))
 			store.dispatch(sellingActions.setLoading(false))
 			cb(payload)
 		}, 300)
+
+		const { id: docId, products } = await getProductsInWarehouse()
+
+		const resultProducts = products?.length ? [...products] : []
+
+		payload.products.forEach((item: IProduct) => {
+			if (resultProducts.find(product => product.product_id === item.product_id && product.user_id === user_id)) {
+				const index = resultProducts.findIndex(product => product.product_id === item.product_id && product.user_id === user_id)
+				resultProducts[index].quantity = resultProducts[index].quantity - (item?.count ?? 0)
+			}
+		})
+
+		await updateProductsInWarehouse(docId as string, resultProducts)
+		getProducts({})
 	} catch (error) {
 		console.log(error)
 		toastErrorMessage(t('something-went-wrong'))

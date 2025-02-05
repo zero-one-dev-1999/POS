@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import Header from './Header'
-import { Box, Divider, Stack, Typography } from '@mui/material'
+import { Box, Divider, Stack } from '@mui/material'
 import { Outlet, useLocation } from 'react-router'
 
 const DashboardLayout: FC = () => {

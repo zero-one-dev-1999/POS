@@ -69,33 +69,6 @@ export const getUnitName = (id: string) => {
 	return lists.unitsList.find((f: IOption) => f.value === id)?.label
 }
 
-// export const getCurrenciesList = async () => {
-// 	const user_id = store.getState().App.user?.uid
-// 	const language = localStorage.getItem('i18nextLng')
-// 	const response = await getDocs(query(collection(db, 'reference-main-currency'), where('user_id', '==', user_id)))
-
-// 	store.dispatch(
-// 		listsActions.setList({
-// 			currenciesList: response.docs.map(doc => ({
-// 				value: doc.id,
-// 				label: doc.data().translations.find((f: ILanguage) => f.lang_short_name === language)?.name
-// 					? doc.data().translations.find((f: ILanguage) => f.lang_short_name === language).name
-// 					: doc.data().translations.find((f: ILanguage) => f.lang_short_name === 'uz')?.name || '',
-// 			})),
-// 		}),
-// 	)
-// }
-
-// export const getCurrencyName = (id: string) => {
-// 	const {
-// 		Lists: { lists },
-// 	} = store.getState()
-
-// 	if (!lists.currenciesList.length) return ''
-
-// 	return lists.currenciesList.find((f: IOption) => f.value === id)?.label
-// }
-
 export const getProductsList = async () => {
 	const user_id = store.getState().App.user?.uid
 	const language = localStorage.getItem('i18nextLng')

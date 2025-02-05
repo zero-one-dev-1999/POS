@@ -43,6 +43,7 @@ const DetailsProvider = ({ children }) => {
 	const [isMix, setIsMix] = useState(false)
 	const [isDebt, setIsDebt] = useState(false)
 	const [checkModal, setCheckModal] = useState<ICheckModal>({ isOpen: false, props: null })
+	const [clientModal, setClientModal] = useState({ isOpen: false })
 	const confirm = useConfirm()
 	const [t] = useTranslation()
 
@@ -144,6 +145,8 @@ const DetailsProvider = ({ children }) => {
 				handleSale,
 				isMix,
 				setIsMix,
+				clientModal,
+				setClientModal,
 				isDebt,
 				setIsDebt,
 				handleResetCheckModal,

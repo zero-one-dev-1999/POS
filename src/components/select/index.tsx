@@ -8,7 +8,7 @@ import { ChangeEvent, ReactNode, useCallback, useMemo } from 'react'
 interface SelectProps<T, Multiple extends boolean | undefined = false, DisableClearable extends boolean | undefined = false, FreeSolo extends boolean | undefined = false>
 	extends AutocompleteProps<T, Multiple, DisableClearable, FreeSolo> {
 	options: readonly T[]
-	error?: string | false
+	error?: string | boolean
 	helperText?: string
 	required?: boolean
 	textFieldOnChange?: (e: ChangeEvent<HTMLInputElement>) => void
