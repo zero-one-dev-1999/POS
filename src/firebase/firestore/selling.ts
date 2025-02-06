@@ -91,3 +91,13 @@ export const sellingProducts = async (payload: ISellingPayload, cb: (props: ISel
 		toastErrorMessage(t('something-went-wrong'))
 	}
 }
+
+export const getSoldProducts = async (setLoading: (value: boolean) => void) => {
+	setLoading(true)
+	const user_id = store.getState().App.user?.uid
+	const response = await getDocs(query(collection(db, 'products-sold'), where('user_id', '==', user_id)))
+	const data = response.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+	setLoading(false)
+
+	return data
+}

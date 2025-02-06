@@ -101,6 +101,7 @@ const DetailsProvider = ({ children }) => {
 					client_id: values.client_id || '',
 					currency_id: currencyId,
 					products,
+					total_price: totalPrice,
 				},
 				(payload: ISellingPayload) => {
 					setPaymentModal({ isOpen: false })

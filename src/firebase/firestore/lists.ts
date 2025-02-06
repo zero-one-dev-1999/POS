@@ -116,3 +116,13 @@ export const getProductsInWarehouseList = async () => {
 		}),
 	)
 }
+
+export const getClientName = (id: string) => {
+	const {
+		Lists: { lists },
+	} = store.getState()
+
+	if (!lists.clientsList.length) return ''
+
+	return lists.clientsList.find((f: IOption) => f.value === id)?.label
+}

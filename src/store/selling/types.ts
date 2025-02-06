@@ -39,6 +39,7 @@ interface ISellingPayload {
 	client_id: string | undefined
 	currency_id: string | null
 	products: Array<IProduct>
+	total_price: number
 }
 
 export type { IState, IProduct, IBasketState, ISellingPayload }

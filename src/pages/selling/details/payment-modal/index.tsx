@@ -6,16 +6,11 @@ import Iconify from '@/components/iconify'
 import { useDispatch } from '@/hooks/use-dispatch'
 import Products from './Products'
 import Calculation from './Calculation'
-import { getClientsList } from '@/firebase/firestore/clients'
 
 const PaymentModal: FC = () => {
 	const [t] = useTranslation()
 
 	const { paymentModal, setPaymentModal } = useDetailsContext()
-
-	useEffect(() => {
-		getClientsList()
-	}, [])
 
 	return (
 		<Dialog fullScreen fullWidth open={paymentModal.isOpen}>
